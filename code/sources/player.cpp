@@ -27,6 +27,7 @@ Player::~Player() {
     this->discard.clear();
 }
 
+
 void Player::setDeck() {
     for(unsigned int i = 0; i < 7; i++) {
         MoneyCard c = MoneyCard("Cuivre", "", 1);

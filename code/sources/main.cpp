@@ -11,7 +11,8 @@ int main() {
     Player p = Player("r", false);
     MoneyCard m = MoneyCard("r", "r", 2);
 
-    //p.setDeck();
+    p.setDeck();
+    p.addCardToDeck(&m);
     
 
 

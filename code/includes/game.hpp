@@ -37,7 +37,8 @@ public:
 
     void run();
     void play(Player * player);
-    bool checkVictory();
+    bool checkEOG();
+    Player * calculateVictor();
 
 
 };

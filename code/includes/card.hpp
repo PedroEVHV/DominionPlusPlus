@@ -22,6 +22,13 @@ class Card {
     Card(std::string name, std::string type, std::string effectDesc);
     ~Card();
 
+    std::string getName() const {return this->name;}
+    std::string getType() const {return this->type;}
+    std::string getEffect() const {return this->effectDesc;}
+    std::string getID() const {return this->id;}
+    int getIdCounter() const {return idCounter;}
+    int getCost() const {return this->cost;}
+
 };
 
 

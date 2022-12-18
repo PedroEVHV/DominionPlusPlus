@@ -38,6 +38,30 @@ void Game::run() {
 
 }
 
-bool Game::checkVictory() {
-    
+bool Game::checkEOG() {
+    int amount;
+    for(const auto& elem : this->otherCards) {
+        if(elem.first->getName() == "Province" && elem.second == 0) {
+            return false;
+        }
+        else if(elem.second == 0) {
+            amount++;
+        }
+        if(amount >= 3) {
+            return true;
+        }
+    }
+
+}
+
+Player * Game::calculateVictor() {
+    Player * victor;
+    int points = 0;
+    for(auto p: this->players) {
+        
+    }
+}
+
+bool checkStack(Card * card, std::map<Card *, int> map) {
+    return map[card] > 0;
 }
