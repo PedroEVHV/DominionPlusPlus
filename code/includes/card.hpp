@@ -5,16 +5,19 @@
 #include <vector>
 
 
+
 class Card {
-    private:
+    protected:
     std::string id;
     static int idCounter;
     std::string name;
     std::string type;
     std::string effectDesc;
+    int cost;
     //sprite
+    
     public:
-    virtual void applyEffect() = 0;
+    virtual void forceVirtual() = 0;
 
     Card(std::string name, std::string type, std::string effectDesc);
     ~Card();

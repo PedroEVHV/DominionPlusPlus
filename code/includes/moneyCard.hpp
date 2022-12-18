@@ -2,16 +2,21 @@
 #define MC_H
 
 #include "card.hpp"
+#include "player.hpp"
 
 class MoneyCard : public Card {
 private:
     int worth;
-    int cost;
+    
 
     public:
-    MoneyCard(std::string name, std::string eD, int worth, int cost);
-    //virtual void applyEffect() = 0;
-    void applyEffect() {}
+
+    void forceVirtual() {}
+
+    MoneyCard(std::string name, std::string eD, int worth);
+    void addMoney(Player * player);
+    
+
 };
 
 #endif 

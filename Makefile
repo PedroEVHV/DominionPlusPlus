@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -Wextra
 
 INCLUDEC = -I/mnt/c/C++/DominionGithub/DominionPlusPlus/code/includes
 SOURCES= $(SOURCEDIR)/main.cpp $(SOURCEDIR)/card.cpp $(SOURCEDIR)/player.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
+#OBJECTS=$(SOURCES:.cpp=.o)
 SOURCEDIR = code/sources
 
 
@@ -11,7 +11,7 @@ SOURCEDIR = code/sources
 	$(CXX) $(CXXFLAGS) $(INCLUDEC) -c $< 
 
 
-main: card.o player.o game.o main.o
+main: card.o player.o game.o main.o moneyCard.o victoryCard.o actionCard.o curseCard.o
 	$(CXX) $^ -o $@
 
 

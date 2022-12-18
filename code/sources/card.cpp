@@ -11,3 +11,8 @@ Card::Card(std::string name, std::string type, std::string effectDesc) {
 
     
 }
+
+
+Card::~Card() {
+    
+}

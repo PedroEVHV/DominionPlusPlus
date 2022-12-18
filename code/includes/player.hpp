@@ -5,6 +5,7 @@
 #include <vector>
 #include "card.hpp"
 
+
 class Player {
     private:
     std::string id;
@@ -12,6 +13,7 @@ class Player {
     std::string name;
     bool isHuman;
     int victoryPoints;
+    int money;
 
     
 
@@ -33,12 +35,26 @@ class Player {
     std::string getName();
     bool getIsHuman();
     int getVictoryPoints();
+    int getMoney();
 
-    void setDeck(std::vector<Card *> set);
+    void setMoney(int money);
+    void setDeck();
     void setHand();
     void setDiscard();
     void setVictoryPoints(int p);
+
+    //Alter card sets
+    void addCardToDeck(Card * card);
+    void removeCardFromDeck(Card * card);
+
+    void addCardToHand(Card * card);
+    void removeCardFromHand(Card * card);
     
+    void addCardToDiscard(Card * card);
+    void removeCardFromDiscard(Card * card);
+
+
+
 
 };
 
