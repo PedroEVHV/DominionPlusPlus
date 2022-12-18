@@ -1,5 +1,7 @@
 #include "card.hpp"
 
+int Card::idCounter = 0;
+
 Card::Card(std::string name, std::string type, std::string effectDesc) {
     this->name = name;
     this->type = type;
