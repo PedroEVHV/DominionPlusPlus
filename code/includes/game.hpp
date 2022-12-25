@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 #include <map>
 #include "player.hpp"
 #include "card.hpp"
@@ -15,6 +16,11 @@ private:
     std::string id;
     static int idCounter;
 
+    //game info
+    int currTurn;
+    Player * currPlayer;
+
+
     std::vector<Player *> players;
     int playerCount;
 
@@ -22,7 +28,8 @@ private:
     std::map<Card *, int> otherCards;
 
 public:
-    Game(std::vector<Player *> playerList, std::vector<Card *> cardList);
+    Game(std::vector<Player *> playerList, std::vector<Card *> cardList, 
+            Card * province, Card * duchy, Card * domain, Card * curse);
     ~Game();
 
     //Getters and setters
@@ -30,6 +37,7 @@ public:
     Player * getPlayerById();
     Player * getPlayerByName();
     int getPlayerCount();
+    std::map<Card *, int> getOC() {return this->otherCards;}
 
     void setPlayers(std::vector<Player *> playerList);
     void setCardSet(std::vector<std::string> cardList);

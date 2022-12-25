@@ -16,6 +16,7 @@ private:
 
     MoneyCard(std::string name, std::string eD, int worth);
     void addMoney(Player * player);
+    ~MoneyCard();
     
 
 };

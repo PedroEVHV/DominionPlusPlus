@@ -10,6 +10,10 @@ CurseCard::~CurseCard() {
 
 }
 
+std::string CurseCard::toString() {
+    
+}
+
 void CurseCard::removePoints(Player * player) {
     player->setVictoryPoints(player->getVictoryPoints() - this->malus);
 }

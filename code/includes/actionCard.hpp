@@ -7,11 +7,12 @@
 class ActionCard : public Card {
     protected:
     std::string actionType;
+    int effectID;
 
     public:
     
-    ActionCard(std::string name, std::string eD);
-
+    ActionCard(std::string name, std::string eD, int cardActID);
+    ~ActionCard();
 
 
     void applyEffect();

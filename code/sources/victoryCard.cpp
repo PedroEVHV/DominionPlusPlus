@@ -8,6 +8,11 @@ VictoryCard::~VictoryCard() {
 
 }
 
+std::string VictoryCard::toString() {
+    
+}
+
 void VictoryCard::addPoints(Player * player) {
     player->setVictoryPoints(player->getVictoryPoints() + this->points);
 }
+

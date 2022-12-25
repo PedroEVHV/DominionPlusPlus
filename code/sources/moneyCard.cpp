@@ -12,6 +12,12 @@ MoneyCard::MoneyCard(std::string name, std::string eD, int worth) : Card(name, "
     }
 }
 
+MoneyCard::~MoneyCard() {}
+
+std::string MoneyCard::toString() {
+    
+}
+
 void MoneyCard::addMoney(Player * player) {
     player->setMoney(player->getMoney() + this->worth);
 }

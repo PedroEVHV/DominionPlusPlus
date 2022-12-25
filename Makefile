@@ -11,7 +11,7 @@ SOURCEDIR = code/sources
 	$(CXX) $(CXXFLAGS) $(INCLUDEC) -c $< 
 
 
-main: card.o player.o game.o main.o moneyCard.o victoryCard.o actionCard.o curseCard.o
+main: card.o moneyCard.o victoryCard.o actionCard.o curseCard.o player.o game.o main.o 
 	$(CXX) $^ -o $@
 
 
