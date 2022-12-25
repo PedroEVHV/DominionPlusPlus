@@ -35,7 +35,11 @@ Game::~Game() {
 }
 
 void Game::run() {
-
+    while(this->checkEOG()) {
+        for(unsigned int i = 0; i < this->players.size(); i++) {
+            
+        }
+    }
 }
 
 bool Game::checkEOG() {
@@ -48,9 +52,10 @@ bool Game::checkEOG() {
             amount++;
         }
         if(amount >= 3) {
-            return true;
+            return false;
         }
     }
+    return true;
 
 }
 
@@ -58,8 +63,12 @@ Player * Game::calculateVictor() {
     Player * victor;
     int points = 0;
     for(auto p: this->players) {
-        
+        if(p->calculateVictoryPoints() > points) {
+            victor = p;
+            points = p->getVictoryPoints();
+        }
     }
+    return victor;
 }
 
 bool checkStack(Card * card, std::map<Card *, int> map) {

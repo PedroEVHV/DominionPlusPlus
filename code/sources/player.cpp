@@ -38,3 +38,60 @@ void Player::setDeck() {
     }
     
 }
+
+int Player::calculateVictoryPoints() {
+        for(auto c: this->deck) {
+            if(c->getType() == "Victoire") {
+                if(c->getName() == "Domaine") {
+                    this->setVictoryPoints(this->victoryPoints + 1);
+                } else if(c->getName() == "Duche") {
+                    this->setVictoryPoints(this->victoryPoints + 3);
+                } else {
+                    this->setVictoryPoints(this->victoryPoints + 6);
+                }
+            } else if(c->getType() == "Malediction") {
+                this->setVictoryPoints(this->victoryPoints - 1);
+            }
+        }
+        for(auto c: this->hand) {
+            if(c->getType() == "Victoire") {
+                if(c->getName() == "Domaine") {
+                    this->setVictoryPoints(this->victoryPoints + 1);
+                } else if(c->getName() == "Duche") {
+                    this->setVictoryPoints(this->victoryPoints + 3);
+                } else {
+                    this->setVictoryPoints(this->victoryPoints + 6);
+                }
+            } else if(c->getType() == "Malediction") {
+                this->setVictoryPoints(this->victoryPoints - 1);
+            }
+        }
+        for(auto c: this->discard) {
+            if(c->getType() == "Victoire") {
+                if(c->getName() == "Domaine") {
+                    this->setVictoryPoints(this->victoryPoints + 1);
+                } else if(c->getName() == "Duche") {
+                    this->setVictoryPoints(this->victoryPoints + 3);
+                } else {
+                    this->setVictoryPoints(this->victoryPoints + 6);
+                }
+            } else if(c->getType() == "Malediction") {
+                this->setVictoryPoints(this->victoryPoints - 1);
+            }
+        }
+
+        return this->victoryPoints;
+    }
+
+std::string Player::toString() {
+    std::string out = "Joueur: " + this->id + "\n   nom: " + this->name + " , humain: ";
+    if(this->isHuman) {
+        out += "true \n";
+    } else {
+        out += "false \n";
+    }
+    out += "main: ";
+    for(auto c: this->hand) {
+        
+    }
+}

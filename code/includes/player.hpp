@@ -53,14 +53,15 @@ class Player {
     void addCardToDiscard(Card * card) {this->discard.push_back(card);}
     void removeCardFromDiscard(Card * card) {int i = 0; for(auto c: this->discard) {if(card == c) {this->discard.erase(this->discard.begin() + i);} else {i++;}}}
 
-    int calculateVictoryPoints() {
-        for(auto c: this->deck) {
-            if(c->getType() == "Victoire") {
-                
-            }
-        }
-    }
 
+
+    int calculateVictoryPoints();
+
+
+    void playTurn();
+
+
+    std::string toString();
 };
 
 #endif 

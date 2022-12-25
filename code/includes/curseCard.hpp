@@ -16,6 +16,7 @@ class CurseCard : public Card {
 
     void forceVirtual() {}
     void removePoints(Player * player);
+    std::string toString();
 };
 
 

@@ -18,6 +18,7 @@ class Card {
     
     public:
     virtual void forceVirtual() = 0;
+    virtual std::string toString() = 0;
 
     Card(std::string name, std::string type, std::string effectDesc);
     ~Card();
