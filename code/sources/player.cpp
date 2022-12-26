@@ -28,13 +28,12 @@ Player::~Player() {
 }
 
 
-void Player::setDeck() {
+void Player::setDeck(Card * copper, Card * domain) {
     for(unsigned int i = 0; i < 7; i++) {
-        MoneyCard c = MoneyCard("Cuivre", "", 1);
-        this->addCardToDeck(&c);
+        this->addCardToDeck(copper);
     }
     for(unsigned int i = 0; i < 3; i++) {
-        //this->addCardToDeck(&VictoryCard("Cuivre", "", 1));
+        this->addCardToDeck(domain);
     }
     
 }
@@ -95,3 +94,4 @@ std::string Player::toString() {
         
     }
 }
+

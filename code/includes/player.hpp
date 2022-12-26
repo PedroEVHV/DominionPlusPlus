@@ -6,6 +6,7 @@
 #include "card.hpp"
 
 
+
 class Player {
     private:
     std::string id;
@@ -38,7 +39,7 @@ class Player {
     int getMoney() const {return this->money;}
 
     void setMoney(int money) {this->money = money;}
-    void setDeck();
+    void setDeck(Card * copper, Card * domain);
     void setHand(std::vector<Card *> set) {this->hand = set;}
     void setDiscard(std::vector<Card *> set) {this->discard = set;}
     void setVictoryPoints(int p) {this->victoryPoints = p;}
@@ -56,9 +57,6 @@ class Player {
 
 
     int calculateVictoryPoints();
-
-
-    void playTurn();
 
 
     std::string toString();

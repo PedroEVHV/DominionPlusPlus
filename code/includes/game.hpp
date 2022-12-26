@@ -29,7 +29,8 @@ private:
 
 public:
     Game(std::vector<Player *> playerList, std::vector<Card *> cardList, 
-            Card * province, Card * duchy, Card * domain, Card * curse);
+            Card * province, Card * duchy, Card * domain, Card * curse,
+            Card * copper, Card * silver, Card * gold);
     ~Game();
 
     //Getters and setters
