@@ -1,6 +1,8 @@
 #include "actionCard.hpp"
+#include "ACM.hpp"
 
-ActionCard::ActionCard(std::string name, std::string eD, int cardActID) : Card(name, "Action", eD) {
+
+ActionCard::ActionCard(std::string name, std::string eD, std::string cardActID) : Card(name, "Action", eD) {
     this->effectID = cardActID;
 }
 
@@ -12,21 +14,10 @@ std::string ActionCard::toString() {
     
 }
 
-void ActionCard::applyEffect() {
-    switch (this->effectID)
-    {
-    case 1:
-        
-        break;
-    
-    default:
-        break;
+void ActionCard::applyEffect(Player * player) {
+    if(this->effectID == "TEST1") {
+        TEST1(player);
     }
 }
 
-
-/*
-    The different effect rules of action cards are specified below. 
-    The applyEffect() method will call one of the following functions.
-*/
 

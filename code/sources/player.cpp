@@ -11,6 +11,9 @@ Player::Player() {
     this->id = "P" + std::to_string(idCounter);
     idCounter++;
     this->money = 0;
+    this->nbCardPlays = 0;
+    this->purchasePower = 0;
+    this->nbPurchases = 0;
 }
 
 Player::Player(std::string name, bool isHuman) {
@@ -19,6 +22,9 @@ Player::Player(std::string name, bool isHuman) {
     this->id = "P" + std::to_string(idCounter);
     idCounter++;
     this->money = 0;
+    this->purchasePower = 0;
+    this->nbCardPlays = 0;
+    this->nbPurchases = 0;
 }
 
 Player::~Player() {

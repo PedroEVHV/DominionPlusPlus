@@ -118,7 +118,35 @@ void Game::play(Player * player) {
     for(Card * card : player->getHand()) {
         std::cout<<card->getName() + ", ";
     }
-    std::cout<<"\nSelectionner la carte a jouer en donnant le numero de la carte."<<std::endl;
+
+        //card select
+    player->setNbCardPlays(1);
+
+    while(player->getNbCardPlays() > 0 && player->getHand().size() > 0) {
+        int select;
+        Card * selectedCard;
+        do
+        {
+            std::cout<<"\nSelectionner la carte a jouer en donnant le numero de la carte."<<std::endl;
+            std::cin>>select;
+            
+        } while (select > player->getHand().size());
+        
+        
+
+        //TODO
+        //play card effect
+
+        std::cout<<"carte jouee"<<std::endl;
+        selectedCard = player->getHand()[select];
+        player->removeCardFromHand(selectedCard);
+        player->setNbCardPlays(player->getNbCardPlays() - 1);
+    }
+    std::cout<<"plus d'actions possibles"<<std::endl;
+    
+
+    //Purchase phase
+    std::cout<<"Phase Achat: Entrez l'identificateur de la carte souhaitée.\n --- Voici votre pouvoir d'achat: "<<player->getPurchasePower()<<" sur "<<player->getNbPurchases()<<" achats."<<std::endl;
     
 
     //Discard

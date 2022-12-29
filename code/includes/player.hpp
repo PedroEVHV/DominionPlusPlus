@@ -17,6 +17,11 @@ class Player {
     int victoryPoints;
     int money;
 
+    //For turn management
+    int nbCardPlays;
+    int nbPurchases;
+    int purchasePower;
+
     
 
     std::vector<Card *> deck;
@@ -39,12 +44,18 @@ class Player {
     int getVictoryPoints() const {return this->victoryPoints;}
     int getMoney() const {return this->money;}
     void printSets() const;
+    int getNbPurchases() const {return this->nbPurchases;}
+    int getPurchasePower() const {return this->purchasePower;}
+    int getNbCardPlays() const {return this->nbCardPlays;}
 
     void setMoney(int money) {this->money = money;}
     void setDeck(Card * copper, Card * domain);
     void setHand(std::vector<Card *> set) {this->hand = set;}
     void setDiscard(std::vector<Card *> set) {this->discard = set;}
     void setVictoryPoints(int p) {this->victoryPoints = p;}
+    void setNbPurchases(int n) {this->nbPurchases = n;}
+    void setNbCardPlays(int n) {this->nbCardPlays = n;}
+    void setPurchasePower(int n) {this->purchasePower = n;}
 
     //Alter card sets
     void addCardToDeck(Card * card) {this->deck.push_back(card);}
