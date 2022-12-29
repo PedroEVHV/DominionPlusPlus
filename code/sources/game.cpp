@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include <cstdlib>
 #include <time.h>
+#include <algorithm>
 
 
 int Game::idCounter = 0;
@@ -13,13 +14,14 @@ Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList,
     idCounter++;
     this->currTurn = 0;
     
-    srand((unsigned) time(0));
-    
     for(unsigned int i = 0; i < cardList.size(); i++) {
         this->kingdomCards.insert(std::pair<Card*, int>(cardList[i], 10));
     }
-    for(unsigned int i = 0; i < playerList.size(); i++) {
-        this->players.push_back(playerList[i]);
+
+    this->players = playerList;
+
+    for(unsigned int i = 0; i < players.size(); i++) {
+        
         this->players[i]->setDeck(copper, domain);
     }
     this->otherCards.insert(std::pair<Card *, int>(curse, 30));
@@ -36,12 +38,16 @@ Game::~Game() {
 
 void Game::run() {
     std::cout<<"Demarrage partie: "<<std::endl;
-    while(this->checkEOG() == true) {
+    int nbtest = 0; //TESTS
+    while(this->checkEOG() == true && nbtest < 4) { //TESTS
         std::cout<<"Tour " + this->currTurn<<std::endl;
-        for(unsigned int i = 0; i < this->players.size(); i++) {
-            this->currPlayer = players[i];
+        for(Player * player: this->players) {
+            this->currPlayer = player;
             std::cout<<this->currPlayer->getName() + " joue actuellement...\n";
+            
             this->play(currPlayer);
+            
+            nbtest++; //TESTS
 
         }
     }
@@ -74,19 +80,56 @@ bool Game::checkEOG() {
 
 void Game::play(Player * player) {
     //Hand setup
-    for(int i = 0; i < 5; i++) {
-
+    std::cout<<"creation main. ";
+    if(player->getHand().size() > 1) {
+        player->clearHand();
     }
+    
+    std::cout<<"Ajout des cartes"<<std::endl;
+    std::vector<int> randInts;
+    std::vector<Card *> cards;
+    for(int i = 0; i < 5; i++) {
+        int random;
+        do
+        {
+            random = rand() % (player->getDeck().size());
+            
+        } while (std::find(randInts.begin(), randInts.end(), random) != randInts.end());
+        
+        randInts.push_back(random);
+        cards.push_back(player->getDeck()[random]);
+        
+
+        player->addCardToHand(player->getDeck()[random]);
+        
+        
+    }
+    
+    for(Card * card : cards) {
+        player->removeCardFromDeck(card);
+        
+    }
+    randInts.clear();
+    cards.clear();
+
 
     //Action phase
     std::cout<<"Phase action: Voici votre main"<<std::endl;
     for(Card * card : player->getHand()) {
-        std::cout<<card->getName() + " ";
+        std::cout<<card->getName() + ", ";
     }
     std::cout<<"\nSelectionner la carte a jouer en donnant le numero de la carte."<<std::endl;
     
 
+    //Discard
+    for(Card * card : player->getHand()) {
+        player->addCardToDiscard(card);
+    }
+    player->clearHand();
 
+    //Deck reset
+    adjustment(player);
+    std::cout<<"termine!"<<std::endl;
 }
 
 Player * Game::calculateVictor() {
@@ -103,4 +146,16 @@ Player * Game::calculateVictor() {
 
 bool checkStack(Card * card, std::map<Card *, int> map) {
     return map[card] > 0;
+}
+
+void Game::adjustment(Player * player) {
+    
+    if(player->getDeck().size() < 5) {
+        std::cout<<"Ajustement"<<std::endl;
+        for(Card * card : player->getDiscard()) {
+            player->addCardToDeck(card);
+            
+        }
+        player->clearDiscard();
+    }
 }

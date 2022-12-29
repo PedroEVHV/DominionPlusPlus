@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 #include "card.hpp"
 
 
@@ -37,6 +38,7 @@ class Player {
     bool getIsHuman() const {return this->isHuman;}
     int getVictoryPoints() const {return this->victoryPoints;}
     int getMoney() const {return this->money;}
+    void printSets() const;
 
     void setMoney(int money) {this->money = money;}
     void setDeck(Card * copper, Card * domain);
@@ -46,14 +48,16 @@ class Player {
 
     //Alter card sets
     void addCardToDeck(Card * card) {this->deck.push_back(card);}
-    void removeCardFromDeck(Card * card) {int i = 0; for(auto c: this->deck) {if(card == c) {this->deck.erase(this->deck.begin() + i);} else {i++;}}}
+    void removeCardFromDeck(Card * card) {int i = 0; for(auto c: this->deck) {if(card == c) {this->deck.erase(this->deck.begin() + i); return;} else {i++;}} }
+    void clearDeck() {this->deck.clear();}
 
     void addCardToHand(Card * card) {this->hand.push_back(card);}
-    void removeCardFromHand(Card * card) {int i = 0; for(auto c: this->hand) {if(card == c) {this->hand.erase(this->hand.begin() + i);} else {i++;}}}
-    
-    void addCardToDiscard(Card * card) {this->discard.push_back(card);}
-    void removeCardFromDiscard(Card * card) {int i = 0; for(auto c: this->discard) {if(card == c) {this->discard.erase(this->discard.begin() + i);} else {i++;}}}
+    void removeCardFromHand(Card * card) {int i = 0; for(auto c: this->hand) {if(card == c) {this->hand.erase(this->hand.begin() + i); return;} else {i++;}}}
+    void clearHand() {this->hand.clear();}
 
+    void addCardToDiscard(Card * card) {this->discard.push_back(card);}
+    void removeCardFromDiscard(Card * card) {int i = 0; for(auto c: this->discard) {if(card == c) {this->discard.erase(this->discard.begin() + i); return;} else {i++;}}}
+    void clearDiscard() {this->discard.clear();}
 
 
     int calculateVictoryPoints();

@@ -7,6 +7,8 @@
 #include "game.hpp"
 
 int main() {
+    srand((unsigned) time(0));
+
     std::string s = "fdsfvcd";
     std::cout<<"hello"<<std::endl;
     Player p1 = Player("ronald", false);
@@ -25,9 +27,12 @@ int main() {
     std::vector<Player *> players = {&p1, &p2};
     std::vector<Card *> cards = {};
     Game test = Game(players, cards, &province, &duche, &domain, &c, &copper, &silver, &gold);
+    
+    
     test.run();
 
-
+    p1.addCardToDeck(&c);
+    p1.removeCardFromDeck(&c);
 
     return 0;
 }

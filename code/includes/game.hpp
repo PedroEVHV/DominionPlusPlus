@@ -48,6 +48,7 @@ public:
     void play(Player * player);
     bool checkEOG();
     Player * calculateVictor();
+    void adjustment(Player * player);
 
 
 };

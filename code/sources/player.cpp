@@ -28,6 +28,11 @@ Player::~Player() {
 }
 
 
+void Player::printSets() const {
+    std::cout<<"Cartes: "<<std::endl;
+    std::cout<<"deck: "<<this->deck.size()<<"; main: "<<this->hand.size()<<"; defausse: "<<this->discard.size()<<std::endl;
+}
+
 void Player::setDeck(Card * copper, Card * domain) {
     for(unsigned int i = 0; i < 7; i++) {
         this->addCardToDeck(copper);
