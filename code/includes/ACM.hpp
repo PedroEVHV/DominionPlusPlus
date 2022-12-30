@@ -6,5 +6,10 @@
 
 void TEST1(Player * player);
 
+void addPurchasePower(Player * player, int n);
+void addActions(Player * player, int n);
+void addPurchases(Player * player, int n);
+
+
 
 #endif

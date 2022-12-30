@@ -79,39 +79,6 @@ bool Game::checkEOG() {
 }
 
 void Game::play(Player * player) {
-    //Hand setup
-    std::cout<<"creation main. ";
-    if(player->getHand().size() > 1) {
-        player->clearHand();
-    }
-    
-    std::cout<<"Ajout des cartes"<<std::endl;
-    std::vector<int> randInts;
-    std::vector<Card *> cards;
-    for(int i = 0; i < 5; i++) {
-        int random;
-        do
-        {
-            random = rand() % (player->getDeck().size());
-            
-        } while (std::find(randInts.begin(), randInts.end(), random) != randInts.end());
-        
-        randInts.push_back(random);
-        cards.push_back(player->getDeck()[random]);
-        
-
-        player->addCardToHand(player->getDeck()[random]);
-        
-        
-    }
-    
-    for(Card * card : cards) {
-        player->removeCardFromDeck(card);
-        
-    }
-    randInts.clear();
-    cards.clear();
-
 
     //Action phase
     std::cout<<"Phase action: Voici votre main"<<std::endl;
@@ -137,6 +104,8 @@ void Game::play(Player * player) {
         //TODO
         //play card effect
 
+        //If card is attack type, enable reaction
+
         std::cout<<"carte jouee"<<std::endl;
         selectedCard = player->getHand()[select];
         player->removeCardFromHand(selectedCard);
@@ -157,6 +126,7 @@ void Game::play(Player * player) {
 
     //Deck reset
     adjustment(player);
+    player->setHand();
     std::cout<<"termine!"<<std::endl;
 }
 
@@ -170,10 +140,6 @@ Player * Game::calculateVictor() {
         }
     }
     return victor;
-}
-
-bool checkStack(Card * card, std::map<Card *, int> map) {
-    return map[card] > 0;
 }
 
 void Game::adjustment(Player * player) {

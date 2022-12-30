@@ -3,6 +3,8 @@
 #include "victoryCard.hpp"
 #include "actionCard.hpp"
 
+#include <algorithm>
+
 int Player::idCounter = 0;
 
 Player::Player() {
@@ -47,6 +49,40 @@ void Player::setDeck(Card * copper, Card * domain) {
         this->addCardToDeck(domain);
     }
     
+}
+
+void Player::setHand() {
+    std::cout<<"creation main. ";
+    if(this->getHand().size() > 1) {
+        this->clearHand();
+    }
+    
+    std::cout<<"Ajout des cartes"<<std::endl;
+    std::vector<int> randInts;
+    std::vector<Card *> cards;
+    for(int i = 0; i < 5; i++) {
+        int random;
+        do
+        {
+            random = rand() % (this->getDeck().size());
+            
+        } while (std::find(randInts.begin(), randInts.end(), random) != randInts.end());
+        
+        randInts.push_back(random);
+        cards.push_back(this->getDeck()[random]);
+        
+
+        this->addCardToHand(this->getDeck()[random]);
+        
+        
+    }
+
+    for(Card * card : cards) {
+        this->removeCardFromDeck(card);
+        
+    }
+    randInts.clear();
+    cards.clear();
 }
 
 int Player::calculateVictoryPoints() {

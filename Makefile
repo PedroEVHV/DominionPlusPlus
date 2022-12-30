@@ -1,5 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra
+WERRFLAG = -Werror
 
 INCLUDEC = -I/mnt/c/C++/DominionGithub/DominionPlusPlus/code/includes
 INCLUDED = -I/mnt/d/C++/DominionGithub/DominionPlusPlus/code/includes

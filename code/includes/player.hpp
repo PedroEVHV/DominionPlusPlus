@@ -50,7 +50,7 @@ class Player {
 
     void setMoney(int money) {this->money = money;}
     void setDeck(Card * copper, Card * domain);
-    void setHand(std::vector<Card *> set) {this->hand = set;}
+    void setHand();
     void setDiscard(std::vector<Card *> set) {this->discard = set;}
     void setVictoryPoints(int p) {this->victoryPoints = p;}
     void setNbPurchases(int n) {this->nbPurchases = n;}
