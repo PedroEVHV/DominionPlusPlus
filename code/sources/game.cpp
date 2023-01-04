@@ -5,7 +5,7 @@
 
 
 int Game::idCounter = 0;
-
+//
 Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList, 
             Card * province, Card * duchy, Card * domain, Card * curse, 
             Card * copper, Card * silver, Card * gold) {

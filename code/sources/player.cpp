@@ -6,7 +6,7 @@
 #include <algorithm>
 
 int Player::idCounter = 0;
-
+//
 Player::Player() {
     this->name = "default";
     this->isHuman = false;

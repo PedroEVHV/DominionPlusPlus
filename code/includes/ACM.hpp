@@ -6,7 +6,7 @@
 #include <iostream>
 
 std::map<std::string, Card*>idents;
-
+//
 /*
     Interactions
 */

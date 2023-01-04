@@ -30,7 +30,7 @@ bool validateCommand(std::string cmd) {
         return false;
     }
 }
-
+//
 void selectEffect(std::string ident, Player * player) {
     if(ident == "ATL") {
         ATL(player);
@@ -39,7 +39,7 @@ void selectEffect(std::string ident, Player * player) {
 
 void addCard(std::string ident, Player * player) {
     if(ident == "ATL") {
-        player->addCardToDeck();
+        
     }
 }
 

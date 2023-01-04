@@ -43,4 +43,4 @@ int main() {
     enterCommand(&p1, &test);
 
     return 0;
-}
+}//
