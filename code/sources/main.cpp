@@ -5,10 +5,18 @@
 #include "player.hpp"
 #include "moneyCard.hpp"
 #include "game.hpp"
+#include "ACM.hpp"
 
 int main() {
     srand((unsigned) time(0));
 
+    std::string s = "p ATL";
+    if(s.substr(2, 3) == "ATL") {
+        std::cout<<"OK"<<std::endl;
+    } else {std::cout<<s.substr(2, 3)<<std::endl;}
+
+
+    
     
     
 
@@ -30,10 +38,9 @@ int main() {
     Game test = Game(players, cards, &province, &duche, &domain, &c, &copper, &silver, &gold);
     
     
-    test.run();
+    //test.run();
 
-    p1.addCardToDeck(&c);
-    p1.removeCardFromDeck(&c);
+    enterCommand(&p1, &test);
 
     return 0;
 }

@@ -24,6 +24,7 @@ Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList,
         
         this->players[i]->setDeck(copper, domain);
     }
+   
     this->otherCards.insert(std::pair<Card *, int>(curse, 30));
     this->otherCards.insert(std::pair<Card *, int>(domain, 12));
     this->otherCards.insert(std::pair<Card *, int>(duchy, 12));
