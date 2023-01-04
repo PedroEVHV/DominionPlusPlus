@@ -25,7 +25,7 @@ Installation goes as follows :
 
 ## Playing instructions
 
-The rules are the same as in the original game. For complete instructions on how to play the game are provided in the documentation (docs folder). Please refer to this documentation or the Q&A for any help.
+The rules are the same as in the original game. For complete instructions on how to play the game check the documentation (docs folder). Please refer to this documentation or the Q&A for any help.
 
 ## Q&A
 
