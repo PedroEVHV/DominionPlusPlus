@@ -3,58 +3,78 @@
 
 #include "player.hpp"
 #include "game.hpp"
+#include "actionCard.hpp"
 #include <iostream>
 
-std::map<std::string, Card*>idents;
-//
-/*
-    Interactions
-*/
+class ActionCardManager {
+    protected:
+    
 
-void enterCommand(Player * player, Game * game);
-bool validateCommand(std::string cmd);
-void selectEffect(std::string ident, Player * player);
-void addCard(std::string ident, Player * player);
+    public:
+    static std::map<std::string, ActionCard*>idents;
 
 
-/*
-    Elementary actions
-*/
+    void setupIdents(std::vector<ActionCard*> cards);
 
-void addPurchasePower(Player * player, int n);
-void addActions(Player * player, int n);
-void addPurchases(Player * player, int n);
+    //
+    /*
+        Interactions
+    */
 
-/*
-    Card effect methods.
-*/
+    void enterCommand(Player * player, Game * game);
+    bool validateCommand(std::string cmd);
+    void selectEffect(std::string ident, Player * player);
+    void addCard(std::string ident, Player * player);
 
-void TEST1(Player * player);
 
-void ATL(Player * player);
-void AVT(Player * player);
-void BBL(Player * player);
-void BCH(Player * player);
-void BCT(Player * player);
-void CAV(Player * player);
-void CHC(Player * player);
-void CHL(Player * player);
-void DVS(Player * player);
-void SPY(Player * player);
-void FSN(Player * player);
-void FSL(Player * player);
-void FGN(Player * player);
-void JDN(Player * player);
-void LBT(Player * player);
-void MRC(Player * player);
-void MLC(Player * player);
-void MNE(Player * player);
-void PTG(Player * player);
-void RNV(Player * player);
-void SAT(Player * player);
-void SAT(Player * player);
-void SRC(Player * player);
-void VLL(Player * player);
-void VOL(Player * player);
+    /*
+        Elementary actions
+    */
+
+    void addPurchasePower(Player * player, int n);
+    void addActions(Player * player, int n);
+    void addPurchases(Player * player, int n);
+
+    /*
+        Card effect methods.
+    */
+
+    static void TEST1(Player * player);
+
+    static void ATL(Player * player);
+    static void AVT(Player * player);
+    static void BBL(Player * player);
+    static void BCH(Player * player);
+    static void BCT(Player * player);
+    static void CAV(Player * player);
+    static void CHC(Player * player);
+    static void CHL(Player * player);
+    static void DVS(Player * player);
+    static void SPY(Player * player);
+    static void FSN(Player * player);
+    static void FSL(Player * player);
+    static void FGN(Player * player);
+    static void JDN(Player * player);
+    static void LBT(Player * player);
+    static void MRC(Player * player);
+    static void MLC(Player * player);
+    static void MNE(Player * player);
+    static void PTG(Player * player);
+    static void RNV(Player * player);
+    static void SAT(Player * player);
+    static void SRC(Player * player);
+    static void VLL(Player * player);
+    static void VOL(Player * player);
+
+};
+
+
+
+
+
+
+
+
+
 
 #endif

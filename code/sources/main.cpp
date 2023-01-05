@@ -4,24 +4,16 @@
 #include <string>
 #include "player.hpp"
 #include "moneyCard.hpp"
+#include "actionCard.hpp"
 #include "game.hpp"
 #include "ACM.hpp"
+#include <time.h>
 
 int main() {
     srand((unsigned) time(0));
 
-    std::string s = "p ATL";
-    if(s.substr(2, 3) == "ATL") {
-        std::cout<<"OK"<<std::endl;
-    } else {std::cout<<s.substr(2, 3)<<std::endl;}
-
-
-    
-    
-    
-
-
     //Card creation
+        //Other cards
     CurseCard c = CurseCard("Malediction", "", -1);
     VictoryCard domain = VictoryCard("Domaine", "", 1);
     VictoryCard duche = VictoryCard("Duche", "", 3);
@@ -29,6 +21,15 @@ int main() {
     MoneyCard copper = MoneyCard("Cuivre", "", 1);
     MoneyCard silver = MoneyCard("Argent", "", 2);
     MoneyCard gold = MoneyCard("Or", "", 3);
+        //Action cards
+    ActionCard workshop = ActionCard("Atelier", "", "ATL", false, false);
+
+    //Transfer cards to idents for Action card Management
+    std::vector<ActionCard*> actionCards;
+    actionCards.push_back(&workshop);
+
+    ActionCardManager acm = ActionCardManager();
+    acm.setupIdents(actionCards);
 
     //Test 
     Player p1 = Player("ronald", false);
@@ -40,7 +41,7 @@ int main() {
     
     //test.run();
 
-    enterCommand(&p1, &test);
+    //acm.enterCommand(&p1, &test);
 
     return 0;
 }//

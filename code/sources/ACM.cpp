@@ -1,5 +1,13 @@
 #include "ACM.hpp"
 
+std::map<std::string, ActionCard *> ActionCardManager::idents;
+
+void ActionCardManager::setupIdents(std::vector<ActionCard*> cards) {
+    for(ActionCard * card: cards) {
+        ActionCardManager::idents.insert(std::pair<std::string, ActionCard*>(card->getActID(), card));
+    }
+}
+
 /*
     Enter command function allows the player to choose what to buy
 
@@ -7,14 +15,14 @@
              b ATL -> buy Atelier
 */
 
-void enterCommand(Player * player, Game * game) {
+void ActionCardManager::enterCommand(Player * player, Game * game) {
     std::string cmd;
     do
     {
         std::cin>>cmd;
     } while (validateCommand(cmd) == false);
 
-    if (cmd[0] == 'p')
+    if (cmd[0] == 'p' && cmd[1] == '-')
     {
         selectEffect(cmd.substr(2,3), player);
     }
@@ -23,7 +31,8 @@ void enterCommand(Player * player, Game * game) {
     
 }
 
-bool validateCommand(std::string cmd) {
+bool ActionCardManager::validateCommand(std::string cmd) {
+    std::cout<<cmd<<" "<<cmd.size()<<std::endl;
     if((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5)) {
         return true;
     } else {
@@ -31,13 +40,14 @@ bool validateCommand(std::string cmd) {
     }
 }
 //
-void selectEffect(std::string ident, Player * player) {
+void ActionCardManager::selectEffect(std::string ident, Player * player) {
+    std::cout<<ident<<std::endl;
     if(ident == "ATL") {
         ATL(player);
     }
 }
 
-void addCard(std::string ident, Player * player) {
+void ActionCardManager::addCard(std::string ident, Player * player) {
     if(ident == "ATL") {
         
     }
@@ -47,15 +57,15 @@ void addCard(std::string ident, Player * player) {
     Elementary actions
 */
 
-void addPurchasePower(Player * player, int n) {
+void ActionCardManager::addPurchasePower(Player * player, int n) {
     player->setPurchasePower(player->getPurchasePower() + n);
 }
 
-void addPurchases(Player * player, int n) {
+void ActionCardManager::addPurchases(Player * player, int n) {
     player->setNbPurchases(player->getNbPurchases() + n);
 }
 
-void addActions(Player * player, int n) {
+void ActionCardManager::addActions(Player * player, int n) {
     player->setNbCardPlays(player->getNbCardPlays() + n);
 }
 
@@ -64,13 +74,7 @@ void addActions(Player * player, int n) {
     The applyEffect() method will call one of the following functions.
 */
 
-
-
-void TEST1(Player * player) {
-    std::cout<<"hello"<<std::endl;
-}
-
-void ATL(Player * player) {
+void ActionCardManager::ATL(Player * player) {
     std::cout<<"Carte Atelier. Choisissez une carte valant au plus 4.\nEntrez un identificateur valide"<<std::endl;
     std::string cmd;
     do

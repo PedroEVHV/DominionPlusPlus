@@ -17,8 +17,8 @@ std::string ActionCard::toString() {
 }
 
 void ActionCard::applyEffect(Player * player) {
-    if(this->effectID == "TEST1") {
-        TEST1(player);
+    if(this->effectID == "ATL") {
+        
     }
 }
 

@@ -11,7 +11,7 @@ private:
 
     public:
 
-    void forceVirtual() {}
+    
     std::string toString();
 
     MoneyCard(std::string name, std::string eD, int worth);

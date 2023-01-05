@@ -17,6 +17,12 @@ class ActionCard : public Card {
     ActionCard(std::string name, std::string eD, std::string cardActID, bool react, bool attack);
     ~ActionCard();
 
+    std::string getActID() {return this->effectID;}
+    std::string getActionType() {return this->actionType;}
+    bool getReact() {return this->react;}
+    bool getAttack() {return this->attack;}
+
+
 
     void applyEffect(Player * player);
     std::string toString();

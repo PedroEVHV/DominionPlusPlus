@@ -14,7 +14,7 @@ class VictoryCard : public Card {
     VictoryCard(std::string name, std::string eD, int points);
     ~VictoryCard();
 
-    void forceVirtual() {}
+    
     std::string toString();
     void addPoints(Player * player);
 };

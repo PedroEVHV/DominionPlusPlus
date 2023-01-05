@@ -91,7 +91,7 @@ void Game::play(Player * player) {
     player->setNbCardPlays(1);
 
     while(player->getNbCardPlays() > 0 && player->getHand().size() > 0) {
-        int select;
+        unsigned int select;
         Card * selectedCard;
         do
         {

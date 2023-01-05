@@ -14,7 +14,7 @@ class CurseCard : public Card {
     CurseCard(std::string name, std::string eD, int malus);
     ~CurseCard();
 
-    void forceVirtual() {}
+    
     void removePoints(Player * player);
     std::string toString();
 };
