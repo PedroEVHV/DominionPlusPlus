@@ -6,7 +6,7 @@
 #include "actionCard.hpp"
 #include <iostream>
 
-class ActionCardManager {
+class ACM {
     protected:
     
 
@@ -14,26 +14,26 @@ class ActionCardManager {
     static std::map<std::string, ActionCard*>idents;
 
 
-    void setupIdents(std::vector<ActionCard*> cards);
+    static void setupIdents(std::vector<ActionCard*> cards);
 
     //
     /*
         Interactions
     */
 
-    void enterCommand(Player * player, Game * game);
-    bool validateCommand(std::string cmd);
-    void selectEffect(std::string ident, Player * player);
-    void addCard(std::string ident, Player * player);
+    static void enterCommand(Player * player, Game * game);
+    static bool validateCommand(std::string cmd);
+    static void selectEffect(std::string ident, Player * player);
+    static void addCard(std::string ident, Player * player);
 
 
     /*
         Elementary actions
     */
 
-    void addPurchasePower(Player * player, int n);
-    void addActions(Player * player, int n);
-    void addPurchases(Player * player, int n);
+    static void addPurchasePower(Player * player, int n);
+    static void addActions(Player * player, int n);
+    static void addPurchases(Player * player, int n);
 
     /*
         Card effect methods.

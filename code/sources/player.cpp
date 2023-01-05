@@ -129,6 +129,10 @@ int Player::calculateVictoryPoints() {
         return this->victoryPoints;
     }
 
+bool Player::isInSet(std::vector<Card*> cards, Card * c) {
+    return std::find(cards.begin(), cards.end(), c) != cards.end();
+}
+
 std::string Player::toString() {
     std::string out = "Joueur: " + this->id + "\n   nom: " + this->name + " , humain: ";
     if(this->isHuman) {

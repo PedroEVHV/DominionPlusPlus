@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "ACM.hpp"
 #include <cstdlib>
 #include <time.h>
 #include <algorithm>
@@ -81,15 +82,25 @@ bool Game::checkEOG() {
 
 void Game::play(Player * player) {
 
-    //Action phase
-    std::cout<<"Phase action: Voici votre main"<<std::endl;
+    std::cout<<"Voici votre main"<<std::endl;
     for(Card * card : player->getHand()) {
         std::cout<<card->getName() + ", ";
     }
+    std::cout<<"Voici votre pouvoir d'achat: "<<player->getPurchasePower()<<" sur "<<player->getNbPurchases()<<" achats."<<std::endl;
 
         //card select
     player->setNbCardPlays(1);
+    bool acted = false;
 
+    do
+    {
+        ACM::enterCommand(player, this);
+    } while (player->getNbCardPlays() > 0 || player->getNbPurchases() > 0);
+    
+    
+
+
+    /* A REMPLACER
     while(player->getNbCardPlays() > 0 && player->getHand().size() > 0) {
         unsigned int select;
         Card * selectedCard;
@@ -99,7 +110,7 @@ void Game::play(Player * player) {
             std::cin>>select;
             
         } while (select > player->getHand().size());
-        
+    
         
 
         //TODO
@@ -111,12 +122,14 @@ void Game::play(Player * player) {
         selectedCard = player->getHand()[select];
         player->removeCardFromHand(selectedCard);
         player->setNbCardPlays(player->getNbCardPlays() - 1);
+        
+    
     }
+    */
     std::cout<<"plus d'actions possibles"<<std::endl;
     
 
-    //Purchase phase
-    std::cout<<"Phase Achat: Entrez l'identificateur de la carte souhaitée.\n --- Voici votre pouvoir d'achat: "<<player->getPurchasePower()<<" sur "<<player->getNbPurchases()<<" achats."<<std::endl;
+    
     
 
     //Discard

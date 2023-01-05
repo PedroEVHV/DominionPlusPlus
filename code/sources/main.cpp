@@ -28,8 +28,7 @@ int main() {
     std::vector<ActionCard*> actionCards;
     actionCards.push_back(&workshop);
 
-    ActionCardManager acm = ActionCardManager();
-    acm.setupIdents(actionCards);
+    ACM::setupIdents(actionCards);
 
     //Test 
     Player p1 = Player("ronald", false);
@@ -39,7 +38,7 @@ int main() {
     Game test = Game(players, cards, &province, &duche, &domain, &c, &copper, &silver, &gold);
     
     
-    //test.run();
+    test.run();
 
     //acm.enterCommand(&p1, &test);
 

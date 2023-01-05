@@ -1,10 +1,10 @@
 #include "ACM.hpp"
 
-std::map<std::string, ActionCard *> ActionCardManager::idents;
+std::map<std::string, ActionCard *> ACM::idents;
 
-void ActionCardManager::setupIdents(std::vector<ActionCard*> cards) {
+void ACM::setupIdents(std::vector<ActionCard*> cards) {
     for(ActionCard * card: cards) {
-        ActionCardManager::idents.insert(std::pair<std::string, ActionCard*>(card->getActID(), card));
+        ACM::idents.insert(std::pair<std::string, ActionCard*>(card->getActID(), card));
     }
 }
 
@@ -15,7 +15,7 @@ void ActionCardManager::setupIdents(std::vector<ActionCard*> cards) {
              b ATL -> buy Atelier
 */
 
-void ActionCardManager::enterCommand(Player * player, Game * game) {
+void ACM::enterCommand(Player * player, Game * game) {
     std::string cmd;
     do
     {
@@ -24,14 +24,47 @@ void ActionCardManager::enterCommand(Player * player, Game * game) {
 
     if (cmd[0] == 'p' && cmd[1] == '-')
     {
-        selectEffect(cmd.substr(2,3), player);
+        ActionCard * card = idents[cmd];
+        if(player->getNbCardPlays() > 0 && player->isInSet(player->getHand(), card)) {
+            selectEffect(cmd.substr(2,3), player);
+        } else {
+            std::cout<<"Erreur carte non jouée"<<std::endl;
+        }
+        
+    } else if(cmd[0] == 'b' && cmd[1] == '-') {
+        std::cout<<"Vous avez choisi de faire un achat. Jouer une carte action ne sera plus possible."<<std::endl;
+        Card * card = idents[cmd.substr(2,3)];
+        if (card->getCost() < player->getPurchasePower())
+        {
+            std::cout<<"Carte achetee"<<std::endl;
+            player->addCardToDiscard(card);
+        } else {
+            std::cout<<"Vous ne pouvez pas acheter cette carte"<<std::endl;
+        }
+        
+    } else if(cmd[0] == 'c') {
+        std::cout<<"Vous avez choisi de finir votre tour"<<std::endl;
+        player->setNbCardPlays(0);
+        player->setNbPurchases(0);
+    } else if(cmd[0] == 's') {
+        std::cout<<"Vous avez choisi de declarer forfait\nEtes-vous sur? O/N"<<std::endl;
+        std::string surrender;
+        do
+        {
+            std::cin>>surrender;
+        } while (surrender != "O" && surrender != "N");
+        
+        if(surrender == "O") {
+            //surrender
+        }
+        
     }
     
 
     
 }
 
-bool ActionCardManager::validateCommand(std::string cmd) {
+bool ACM::validateCommand(std::string cmd) {
     std::cout<<cmd<<" "<<cmd.size()<<std::endl;
     if((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5)) {
         return true;
@@ -40,14 +73,14 @@ bool ActionCardManager::validateCommand(std::string cmd) {
     }
 }
 //
-void ActionCardManager::selectEffect(std::string ident, Player * player) {
+void ACM::selectEffect(std::string ident, Player * player) {
     std::cout<<ident<<std::endl;
     if(ident == "ATL") {
         ATL(player);
     }
 }
 
-void ActionCardManager::addCard(std::string ident, Player * player) {
+void ACM::addCard(std::string ident, Player * player) {
     if(ident == "ATL") {
         
     }
@@ -57,15 +90,15 @@ void ActionCardManager::addCard(std::string ident, Player * player) {
     Elementary actions
 */
 
-void ActionCardManager::addPurchasePower(Player * player, int n) {
+void ACM::addPurchasePower(Player * player, int n) {
     player->setPurchasePower(player->getPurchasePower() + n);
 }
 
-void ActionCardManager::addPurchases(Player * player, int n) {
+void ACM::addPurchases(Player * player, int n) {
     player->setNbPurchases(player->getNbPurchases() + n);
 }
 
-void ActionCardManager::addActions(Player * player, int n) {
+void ACM::addActions(Player * player, int n) {
     player->setNbCardPlays(player->getNbCardPlays() + n);
 }
 
@@ -74,7 +107,7 @@ void ActionCardManager::addActions(Player * player, int n) {
     The applyEffect() method will call one of the following functions.
 */
 
-void ActionCardManager::ATL(Player * player) {
+void ACM::ATL(Player * player) {
     std::cout<<"Carte Atelier. Choisissez une carte valant au plus 4.\nEntrez un identificateur valide"<<std::endl;
     std::string cmd;
     do
