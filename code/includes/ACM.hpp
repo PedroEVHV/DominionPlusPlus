@@ -2,28 +2,26 @@
 #define ACM_H
 
 #include "player.hpp"
-#include "game.hpp"
 #include "actionCard.hpp"
+#include "game.hpp"
 #include <iostream>
+#include <cstdlib>
+#include <time.h>
+#include <algorithm>
+#include <map>
 
 class ACM {
     protected:
     
 
     public:
-    static std::map<std::string, ActionCard*>idents;
-
-
-    static void setupIdents(std::vector<ActionCard*> cards);
 
     //
     /*
         Interactions
     */
 
-    static void enterCommand(Player * player, Game * game);
-    static bool validateCommand(std::string cmd);
-    static void selectEffect(std::string ident, Player * player);
+    static void selectEffect(std::string ident, Player * player, std::map<std::string, Card*> idents);
     static void addCard(std::string ident, Player * player);
 
 
@@ -41,12 +39,12 @@ class ACM {
 
     static void TEST1(Player * player);
 
-    static void ATL(Player * player);
+    static void ATL(Player * player, std::map<std::string, Card*> idents);
     static void AVT(Player * player);
     static void BBL(Player * player);
     static void BCH(Player * player);
     static void BCT(Player * player);
-    static void CAV(Player * player);
+    static void CAV(Player * player, std::map<std::string, Card*> idents, Game * game);
     static void CHC(Player * player);
     static void CHL(Player * player);
     static void DVS(Player * player);
@@ -65,6 +63,11 @@ class ACM {
     static void SRC(Player * player);
     static void VLL(Player * player);
     static void VOL(Player * player);
+
+    //Other cards
+    static void CVE(Player * player);
+    static void AGN(Player * player);
+    static void AUR(Player * player);
 
 };
 

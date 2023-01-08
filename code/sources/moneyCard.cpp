@@ -1,6 +1,6 @@
 #include "moneyCard.hpp"
 
-MoneyCard::MoneyCard(std::string name, std::string eD, int worth) : Card(name, "Tresor", eD) {
+MoneyCard::MoneyCard(std::string name, std::string eD, std::string cmdID,  int worth) : Card(name, "Tresor", eD, cmdID) {
     this->worth = worth;
     this->cost = cost;
     if(worth == 1) {

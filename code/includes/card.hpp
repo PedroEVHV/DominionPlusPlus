@@ -9,6 +9,7 @@
 class Card {
     protected:
     std::string id;
+    std::string cmdID;
     static int idCounter;
     std::string name;
     std::string type;
@@ -20,13 +21,14 @@ class Card {
     
     virtual std::string toString() = 0;
 
-    Card(std::string name, std::string type, std::string effectDesc);
+    Card(std::string name, std::string type, std::string effectDesc, std::string cmdID);
     ~Card();
 
     std::string getName() const {return this->name;}
     std::string getType() const {return this->type;}
     std::string getEffect() const {return this->effectDesc;}
     std::string getID() const {return this->id;}
+    std::string getCmdID() const {return this->cmdID;}
     int getIdCounter() const {return idCounter;}
     int getCost() const {return this->cost;}
 

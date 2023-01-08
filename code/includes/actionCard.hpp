@@ -14,7 +14,7 @@ class ActionCard : public Card {
 
     public:
     
-    ActionCard(std::string name, std::string eD, std::string cardActID, bool react, bool attack);
+    ActionCard(std::string name, std::string eD, std::string cmdID, bool react, bool attack);
     ~ActionCard();
 
     std::string getActID() {return this->effectID;}

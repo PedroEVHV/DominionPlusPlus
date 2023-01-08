@@ -1,11 +1,18 @@
 #include "game.hpp"
 #include "ACM.hpp"
-#include <cstdlib>
-#include <time.h>
-#include <algorithm>
+
+#define CARDSETS 2
 
 
 int Game::idCounter = 0;
+
+std::map<std::string, Card *> Game::idents;
+
+void Game::setupIdents(std::vector<Card*> cards) {
+    for(Card * card: cards) {
+        idents.insert(std::pair<std::string, Card*>(card->getCmdID(), card));
+    }
+}
 //
 Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList, 
             Card * province, Card * duchy, Card * domain, Card * curse, 
@@ -24,6 +31,7 @@ Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList,
     for(unsigned int i = 0; i < players.size(); i++) {
         
         this->players[i]->setDeck(copper, domain);
+        this->players[i]->setHand();
     }
    
     this->otherCards.insert(std::pair<Card *, int>(curse, 30));
@@ -84,17 +92,21 @@ void Game::play(Player * player) {
 
     std::cout<<"Voici votre main"<<std::endl;
     for(Card * card : player->getHand()) {
-        std::cout<<card->getName() + ", ";
+        std::cout<<card->getName() + " ";
     }
-    std::cout<<"Voici votre pouvoir d'achat: "<<player->getPurchasePower()<<" sur "<<player->getNbPurchases()<<" achats."<<std::endl;
-
+    std::cout<<std::endl;
         //card select
     player->setNbCardPlays(1);
+    player->setNbPurchases(1);
+    player->setPurchasePower(0);
+    
+
     bool acted = false;
 
-    do
-    {
-        ACM::enterCommand(player, this);
+    do {
+        std::cout<<"Voici votre pouvoir d'achat: "<<player->getPurchasePower()<<" sur "<<player->getNbPurchases()<<" achats."<<std::endl<<"et vous pouvez jouer encore "<<player->getNbCardPlays()<<" cartes."<<std::endl;
+
+        this->enterCommand(player, &acted);
     } while (player->getNbCardPlays() > 0 || player->getNbPurchases() > 0);
     
     
@@ -166,4 +178,86 @@ void Game::adjustment(Player * player) {
         }
         player->clearDiscard();
     }
+}
+
+
+bool Game::validateCommand(std::string cmd) {
+    if((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+void Game::enterCommand(Player * player, bool * acted) {
+    std::string cmd;
+    do {
+        std::cin>>cmd;
+    } while (validateCommand(cmd) == false);
+
+    if (cmd[0] == 'p' && cmd[1] == '-') {
+        if(!*acted) {
+           Card * card = idents[cmd.substr(2,3)];
+            if(player->getNbCardPlays() > 0 && player->isInSet(player->getHand(), card)) {
+                if(cmd.substr(2,3) != "CVE" && cmd.substr(2,3) != "AGN" && cmd.substr(2,3) != "AUR") {
+                    player->setNbCardPlays(player->getNbCardPlays() - 1);
+                }
+                ACM::selectEffect(cmd.substr(2,3), player, idents);
+            } else {
+                std::cout<<"Erreur carte non jouée"<<std::endl;
+            } 
+        } else {
+            std::cout<<"Attention vous avez passé la phase action"<<std::endl;
+        }
+    } else if(cmd[0] == 'b' && cmd[1] == '-') {
+        *acted = true;
+        std::cout<<"Vous avez choisi de faire un achat. Jouer une carte action ne sera plus possible."<<std::endl;
+        player->setNbCardPlays(0);
+        Card * card = idents[cmd.substr(2,3)];
+        if (card->getCost() < player->getPurchasePower() && this->kingdomCards[card] > 0 && player->getNbPurchases() > 0) {
+            std::cout<<"Carte achetee"<<std::endl;
+            player->addCardToDiscard(card);
+        } else {
+            std::cout<<"Vous ne pouvez pas acheter cette carte"<<std::endl;
+        }
+        
+    } else if(cmd[0] == 'c') {
+        std::cout<<"Vous avez choisi de finir votre tour"<<std::endl;
+        player->setNbCardPlays(0);
+        player->setNbPurchases(0);
+    } else if(cmd[0] == 's') {
+        std::cout<<"Vous avez choisi de declarer forfait\nEtes-vous sur? O/N"<<std::endl;
+        std::string surrender;
+        do
+        {
+            std::cin>>surrender;
+        } while (surrender != "O" && surrender != "N");
+        
+        if(surrender == "O") {
+            //surrender
+        }
+        
+    }
+}
+
+
+void Game::chooseCardsInit(std::vector<Card *> cards) {
+    int cmd;
+    std::cout<<"Choisissez un set de cartes royaume"<<std::endl;
+    do {
+        std::cout<<"Entrez le numéro correspondant"<<std::endl;
+        std::cin>>cmd;
+    } while (cmd < CARDSETS);
+    
+    switch (cmd)
+    {
+    case 1:
+        
+        break;
+    
+    case 2:
+        break;
+    }
+
 }

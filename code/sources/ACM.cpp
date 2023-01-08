@@ -1,13 +1,5 @@
 #include "ACM.hpp"
 
-std::map<std::string, ActionCard *> ACM::idents;
-
-void ACM::setupIdents(std::vector<ActionCard*> cards) {
-    for(ActionCard * card: cards) {
-        ACM::idents.insert(std::pair<std::string, ActionCard*>(card->getActID(), card));
-    }
-}
-
 /*
     Enter command function allows the player to choose what to buy
 
@@ -15,69 +7,20 @@ void ACM::setupIdents(std::vector<ActionCard*> cards) {
              b ATL -> buy Atelier
 */
 
-void ACM::enterCommand(Player * player, Game * game) {
-    std::string cmd;
-    do
-    {
-        std::cin>>cmd;
-    } while (validateCommand(cmd) == false);
 
-    if (cmd[0] == 'p' && cmd[1] == '-')
-    {
-        ActionCard * card = idents[cmd];
-        if(player->getNbCardPlays() > 0 && player->isInSet(player->getHand(), card)) {
-            selectEffect(cmd.substr(2,3), player);
-        } else {
-            std::cout<<"Erreur carte non jouée"<<std::endl;
-        }
-        
-    } else if(cmd[0] == 'b' && cmd[1] == '-') {
-        std::cout<<"Vous avez choisi de faire un achat. Jouer une carte action ne sera plus possible."<<std::endl;
-        Card * card = idents[cmd.substr(2,3)];
-        if (card->getCost() < player->getPurchasePower())
-        {
-            std::cout<<"Carte achetee"<<std::endl;
-            player->addCardToDiscard(card);
-        } else {
-            std::cout<<"Vous ne pouvez pas acheter cette carte"<<std::endl;
-        }
-        
-    } else if(cmd[0] == 'c') {
-        std::cout<<"Vous avez choisi de finir votre tour"<<std::endl;
-        player->setNbCardPlays(0);
-        player->setNbPurchases(0);
-    } else if(cmd[0] == 's') {
-        std::cout<<"Vous avez choisi de declarer forfait\nEtes-vous sur? O/N"<<std::endl;
-        std::string surrender;
-        do
-        {
-            std::cin>>surrender;
-        } while (surrender != "O" && surrender != "N");
-        
-        if(surrender == "O") {
-            //surrender
-        }
-        
-    }
-    
 
-    
-}
-
-bool ACM::validateCommand(std::string cmd) {
-    std::cout<<cmd<<" "<<cmd.size()<<std::endl;
-    if((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5)) {
-        return true;
-    } else {
-        return false;
-    }
-}
 //
-void ACM::selectEffect(std::string ident, Player * player) {
+void ACM::selectEffect(std::string ident, Player * player, std::map<std::string, Card*> idents) {
     std::cout<<ident<<std::endl;
     if(ident == "ATL") {
-        ATL(player);
-    }
+        ATL(player, idents);
+    } else if(ident == "CVE") {
+        CVE(player);
+    } else if(ident == "AGN") {
+        AGN(player);
+    } else if(ident == "AUR") {
+        AUR(player);
+    } 
 }
 
 void ACM::addCard(std::string ident, Player * player) {
@@ -107,7 +50,7 @@ void ACM::addActions(Player * player, int n) {
     The applyEffect() method will call one of the following functions.
 */
 
-void ACM::ATL(Player * player) {
+void ACM::ATL(Player * player, std::map<std::string, Card*> idents) {
     std::cout<<"Carte Atelier. Choisissez une carte valant au plus 4.\nEntrez un identificateur valide"<<std::endl;
     std::string cmd;
     do
@@ -116,4 +59,55 @@ void ACM::ATL(Player * player) {
     } while (idents.find(cmd) == idents.end());
     
 
+}
+
+
+void ACM::BCH(Player * player) {
+    addPurchases(player, 1);
+    addPurchasePower(player, 2);
+}
+
+
+void ACM::CAV(Player * player, std::map<std::string, Card*> idents, Game * game) {
+    addActions(player, 1);
+    std::string cmd;
+    unsigned int nbDiscards = 0;
+    std::cout<<"Vous pouvez défausser autant de que vous le souhaitez.\nEntrez un identificateur. Entrez STOP pour passer."<<std::endl;
+    do
+    {
+        std::cin>>cmd;
+        bool discarded = false;
+        Card* toBeDiscarded;
+        for(Card * card : player->getHand()) {
+            if(discarded == false && idents[cmd] == card) {
+                player->addCardToDiscard(card);
+                toBeDiscarded = card;
+                discarded = true;
+            }
+        }
+        player->removeCardFromHand(toBeDiscarded);
+        
+    } while (cmd != "STOP");
+    for (unsigned int i = 0; i < nbDiscards; i++)
+    {
+        player->addCardToHand(player->getDeck()[0]);
+        player->getDeck().erase(player->getDeck().begin());
+    }
+    
+    
+}
+
+
+//Other cards
+
+void ACM::CVE(Player * player) {
+    player->setPurchasePower(player->getPurchasePower() + 1);
+}
+
+void ACM::AGN(Player * player) {
+    player->setPurchasePower(player->getPurchasePower() + 2);
+}
+
+void ACM::AUR(Player * player) {
+    player->setPurchasePower(player->getPurchasePower() + 3);
 }

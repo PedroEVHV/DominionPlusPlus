@@ -14,7 +14,7 @@ private:
     
     std::string toString();
 
-    MoneyCard(std::string name, std::string eD, int worth);
+    MoneyCard(std::string name, std::string eD, std::string cmdID, int worth);
     void addMoney(Player * player);
     ~MoneyCard();
     

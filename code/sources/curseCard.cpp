@@ -2,7 +2,7 @@
 #include <string>
 
 
-CurseCard::CurseCard(std::string name, std::string eD, int malus) : Card(name, "Malediction", eD) {
+CurseCard::CurseCard(std::string name, std::string eD, std::string cmdID,  int malus) : Card(name, "Malediction", eD, cmdID) {
     this->malus = malus;
 }
 

@@ -1,6 +1,6 @@
 #include "victoryCard.hpp"
 
-VictoryCard::VictoryCard(std::string name, std::string eD, int points) : Card(name, "Victoire", eD){
+VictoryCard::VictoryCard(std::string name, std::string eD, std::string cmdID, int points) : Card(name, "Victoire", eD, cmdID){
     this->points = points;
 }
 

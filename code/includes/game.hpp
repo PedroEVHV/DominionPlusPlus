@@ -10,6 +10,7 @@
 #include "moneyCard.hpp"
 #include "curseCard.hpp"
 #include "victoryCard.hpp"
+#include "actionCard.hpp"
 
 class Game {
 private:
@@ -26,6 +27,9 @@ private:
 
     std::map<Card *, int> kingdomCards;
     std::map<Card *, int> otherCards;
+    
+    static std::map<std::string, Card*>idents;
+
 
 public:
     Game(std::vector<Player *> playerList, std::vector<Card *> cardList, 
@@ -49,6 +53,12 @@ public:
     bool checkEOG();
     Player * calculateVictor();
     void adjustment(Player * player);
+
+    static bool validateCommand(std::string cmd);
+    void enterCommand(Player * player, bool * acted);
+    static void setupIdents(std::vector<Card*> cards);
+
+    static void chooseCardsInit(std::vector<Card*> cards);
 
 
 };
