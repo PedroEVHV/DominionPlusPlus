@@ -21,7 +21,7 @@ class Card {
     
     virtual std::string toString() = 0;
 
-    Card(std::string name, std::string type, std::string effectDesc, std::string cmdID);
+    Card(std::string name, std::string type, std::string effectDesc, std::string cmdID, int cost);
     ~Card();
 
     std::string getName() const {return this->name;}

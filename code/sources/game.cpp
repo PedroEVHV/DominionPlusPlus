@@ -109,35 +109,6 @@ void Game::play(Player * player) {
         this->enterCommand(player, &acted);
     } while (player->getNbCardPlays() > 0 || player->getNbPurchases() > 0);
     
-    
-
-
-    /* A REMPLACER
-    while(player->getNbCardPlays() > 0 && player->getHand().size() > 0) {
-        unsigned int select;
-        Card * selectedCard;
-        do
-        {
-            std::cout<<"\nSelectionner la carte a jouer en donnant le numero de la carte."<<std::endl;
-            std::cin>>select;
-            
-        } while (select > player->getHand().size());
-    
-        
-
-        //TODO
-        //play card effect
-
-        //If card is attack type, enable reaction
-
-        std::cout<<"carte jouee"<<std::endl;
-        selectedCard = player->getHand()[select];
-        player->removeCardFromHand(selectedCard);
-        player->setNbCardPlays(player->getNbCardPlays() - 1);
-        
-    
-    }
-    */
     std::cout<<"plus d'actions possibles"<<std::endl;
     
 
@@ -182,7 +153,7 @@ void Game::adjustment(Player * player) {
 
 
 bool Game::validateCommand(std::string cmd) {
-    if((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5)) {
+    if(((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5)) || ((cmd[0] == 'c' || cmd[0] == 's') && cmd.size() == 1) ) {
         return true;
     } else {
         return false;
@@ -215,11 +186,16 @@ void Game::enterCommand(Player * player, bool * acted) {
         std::cout<<"Vous avez choisi de faire un achat. Jouer une carte action ne sera plus possible."<<std::endl;
         player->setNbCardPlays(0);
         Card * card = idents[cmd.substr(2,3)];
-        if (card->getCost() < player->getPurchasePower() && this->kingdomCards[card] > 0 && player->getNbPurchases() > 0) {
+        if (card->getCost() < player->getPurchasePower() && this->kingdomCards[card] > 0 && player->getNbPurchases() > 0 && card->getCost() <= player->getPurchasePower()) {
             std::cout<<"Carte achetee"<<std::endl;
             player->addCardToDiscard(card);
+            player->setNbPurchases(player->getNbPurchases() - 1);
+            player->setPurchasePower(player->getPurchasePower() - card->getCost());
         } else {
-            std::cout<<"Vous ne pouvez pas acheter cette carte"<<std::endl;
+            std::cout<<"Vous ne pouvez pas acheter cette carte.";
+            if(card->getCost() > player->getPurchasePower()) {
+                std::cout<<" La carte est trop chère\n";
+            } else {std::cout<<std::endl;}
         }
         
     } else if(cmd[0] == 'c') {

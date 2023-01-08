@@ -47,6 +47,7 @@ class ACM {
     static void CAV(Player * player, std::map<std::string, Card*> idents, Game * game);
     static void CHC(Player * player);
     static void CHL(Player * player);
+    static void CPL(Player * player);
     static void DVS(Player * player);
     static void SPY(Player * player);
     static void FSN(Player * player);

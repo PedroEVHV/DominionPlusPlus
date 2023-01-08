@@ -27,6 +27,8 @@ private:
 
     std::map<Card *, int> kingdomCards;
     std::map<Card *, int> otherCards;
+
+    std::vector<Card *> trash;
     
     static std::map<std::string, Card*>idents;
 
@@ -43,6 +45,10 @@ public:
     Player * getPlayerByName();
     int getPlayerCount();
     std::map<Card *, int> getOC() {return this->otherCards;}
+    std::vector<Card *> getTrash() {return this->trash;}
+
+    void trash(Card * card);
+    void recover(Card * card);
 
     void setPlayers(std::vector<Player *> playerList);
     void setCardSet(std::vector<std::string> cardList);

@@ -56,6 +56,9 @@ void ACM::ATL(Player * player, std::map<std::string, Card*> idents) {
     do
     {
         std::cin>>cmd;
+        if(idents.find(cmd) != idents.end() && idents[cmd]->getCost() > 4) {
+            std::cout<<"Cette carte vaut pus que 4. Choisissez-en une autre.\n";
+        }
     } while (idents.find(cmd) == idents.end());
     
 
@@ -94,6 +97,11 @@ void ACM::CAV(Player * player, std::map<std::string, Card*> idents, Game * game)
         player->getDeck().erase(player->getDeck().begin());
     }
     
+    
+}
+
+
+void ACM::CPL(Player * player) {
     
 }
 

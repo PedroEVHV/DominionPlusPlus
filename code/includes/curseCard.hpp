@@ -11,7 +11,7 @@ class CurseCard : public Card {
 
     public: 
 
-    CurseCard(std::string name, std::string eD, std::string cmdID, int malus);
+    CurseCard(std::string name, std::string eD, std::string cmdID, int malus, int cost);
     ~CurseCard();
 
     

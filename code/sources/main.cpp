@@ -14,17 +14,17 @@ int main() {
 
     //Card creation
         //Other cards
-    CurseCard c = CurseCard("Malediction", "", "MAL", -1);
-    VictoryCard domain = VictoryCard("Domaine", "", "DMN", 1);
-    VictoryCard duche = VictoryCard("Duche", "", "DUC", 3);
-    VictoryCard province = VictoryCard("Province", "", "PRV",  6);
-    MoneyCard copper = MoneyCard("Cuivre", "", "CVE", 1);
-    MoneyCard silver = MoneyCard("Argent", "", "AGN", 2);
-    MoneyCard gold = MoneyCard("Or", "", "AUR", 3);
+    CurseCard c = CurseCard("Malediction", "", "MAL", -1, 0);
+    VictoryCard domain = VictoryCard("Domaine", "", "DMN", 1, 2);
+    VictoryCard duche = VictoryCard("Duche", "", "DUC", 3, 5);
+    VictoryCard province = VictoryCard("Province", "", "PRV",  6, 8);
+    MoneyCard copper = MoneyCard("Cuivre", "", "CVE", 1, 0);
+    MoneyCard silver = MoneyCard("Argent", "", "AGN", 2, 3);
+    MoneyCard gold = MoneyCard("Or", "", "AUR", 3, 6);
         //Action cards
-    ActionCard workshop = ActionCard("Atelier", "", "ATL", false, false);
-    ActionCard lumber = ActionCard("Bucheron", "", "BCH", false, false);
-    ActionCard cellar = ActionCard("Cave", "", "CAV", false, false);
+    ActionCard workshop = ActionCard("Atelier", "", "ATL", false, false, 3);
+    ActionCard lumber = ActionCard("Bucheron", "", "BCH", false, false, 3);
+    ActionCard cellar = ActionCard("Cave", "", "CAV", false, false, 2);
 
     //Transfer cards to idents map
     std::vector<Card*> cardsForMap;
