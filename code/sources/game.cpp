@@ -42,6 +42,22 @@ Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList,
     
 }
 
+
+void Game::toTrash(Card * card, Player * player, bool b) {
+    this->trash.push_back(card);
+    if(b) {
+        player->removeCardFromHand(card);
+    }
+    
+}
+
+void Game::recover(Card * card, Player * player) {
+    if(std::find(this->trash.begin(), this->trash.end(), card) != this->trash.end()) {
+        int i = 0; for(auto c: this->trash) {if(card == c) {this->trash.erase(this->trash.begin() + i); return;} else {i++;}}
+        player->addCardToDiscard(card);
+    }
+}
+
 Game::~Game() {
     
 }

@@ -71,7 +71,7 @@ void ACM::BCH(Player * player) {
 }
 
 
-void ACM::CAV(Player * player, std::map<std::string, Card*> idents, Game * game) {
+void ACM::CAV(Player * player, Game * game) {
     addActions(player, 1);
     std::string cmd;
     unsigned int nbDiscards = 0;
@@ -82,7 +82,7 @@ void ACM::CAV(Player * player, std::map<std::string, Card*> idents, Game * game)
         bool discarded = false;
         Card* toBeDiscarded;
         for(Card * card : player->getHand()) {
-            if(discarded == false && idents[cmd] == card) {
+            if(discarded == false && game->getIdents()[cmd] == card) {
                 player->addCardToDiscard(card);
                 toBeDiscarded = card;
                 discarded = true;
@@ -101,8 +101,22 @@ void ACM::CAV(Player * player, std::map<std::string, Card*> idents, Game * game)
 }
 
 
-void ACM::CPL(Player * player) {
-    
+void ACM::CPL(Player * player, Game * game) {
+    std::cout<<"Vous pouvez écarter autant de que vous le souhaitez.\nEntrez un identificateur. Entrez STOP pour passer."<<std::endl;
+    std::string cmd;
+    do
+    {
+        std::cin>>cmd;
+        bool trashed = false;
+        Card* tobeTrashed;
+        for(Card * card : player->getHand()) {
+            if(trashed == false && game->getIdents()[cmd] == card) {
+                game->toTrash(card, player, false);
+            }
+        }
+        player->removeCardFromHand(tobeTrashed);
+        
+    } while (cmd != "STOP");
 }
 
 

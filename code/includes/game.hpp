@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <algorithm>
 #include "player.hpp"
 #include "card.hpp"
 #include "moneyCard.hpp"
@@ -46,9 +47,10 @@ public:
     int getPlayerCount();
     std::map<Card *, int> getOC() {return this->otherCards;}
     std::vector<Card *> getTrash() {return this->trash;}
+    std::map<std::string, Card*> getIdents() {return idents;}
 
-    void trash(Card * card);
-    void recover(Card * card);
+    void toTrash(Card * card, Player * player, bool b);
+    void recover(Card * card, Player * player);
 
     void setPlayers(std::vector<Player *> playerList);
     void setCardSet(std::vector<std::string> cardList);
