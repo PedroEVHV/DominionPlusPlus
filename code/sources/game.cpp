@@ -65,7 +65,7 @@ Game::~Game() {
 void Game::run() {
     std::cout<<"Demarrage partie: "<<std::endl;
     int nbtest = 0; //TESTS
-    while(this->checkEOG() == true && nbtest < 4) { //TESTS
+    while(this->checkEOG() == true && nbtest < 10) { //TESTS
         std::cout<<"Tour " + this->currTurn<<std::endl;
         for(Player * player: this->players) {
             this->currPlayer = player;
@@ -106,11 +106,7 @@ bool Game::checkEOG() {
 
 void Game::play(Player * player) {
 
-    std::cout<<"Voici votre main"<<std::endl;
-    for(Card * card : player->getHand()) {
-        std::cout<<card->getName() + " ";
-    }
-    std::cout<<std::endl;
+    player->showHand();
         //card select
     player->setNbCardPlays(1);
     player->setNbPurchases(1);
@@ -183,6 +179,8 @@ void Game::enterCommand(Player * player, bool * acted) {
         std::cin>>cmd;
     } while (validateCommand(cmd) == false);
 
+    
+
     if (cmd[0] == 'p' && cmd[1] == '-') {
         if(!*acted) {
            Card * card = idents[cmd.substr(2,3)];
@@ -191,6 +189,8 @@ void Game::enterCommand(Player * player, bool * acted) {
                     player->setNbCardPlays(player->getNbCardPlays() - 1);
                 }
                 ACM::selectEffect(cmd.substr(2,3), player, idents);
+                player->removeCardFromHand(card);
+                player->showHand();
             } else {
                 std::cout<<"Erreur carte non jouée"<<std::endl;
             } 
@@ -202,7 +202,9 @@ void Game::enterCommand(Player * player, bool * acted) {
         std::cout<<"Vous avez choisi de faire un achat. Jouer une carte action ne sera plus possible."<<std::endl;
         player->setNbCardPlays(0);
         Card * card = idents[cmd.substr(2,3)];
-        if (card->getCost() < player->getPurchasePower() && this->kingdomCards[card] > 0 && player->getNbPurchases() > 0 && card->getCost() <= player->getPurchasePower()) {
+        if (card->getCost() <= player->getPurchasePower() && ((card->getType() == "Action" && this->kingdomCards[card] > 0) || card->getType() != "Action")
+             && player->getNbPurchases() > 0
+             && (card->getCmdID() == "CVE" || card->getCmdID() == "AGN" || card->getCmdID() == "AUR" || card->getCmdID() == "MAL" || card->getCmdID() == "DMN" || card->getCmdID() == "DUC" || card->getCmdID() == "PRV")) {
             std::cout<<"Carte achetee"<<std::endl;
             player->addCardToDiscard(card);
             player->setNbPurchases(player->getNbPurchases() - 1);
@@ -228,6 +230,7 @@ void Game::enterCommand(Player * player, bool * acted) {
         
         if(surrender == "O") {
             //surrender
+            exit(0);
         }
         
     }

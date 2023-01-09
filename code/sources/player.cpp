@@ -133,6 +133,16 @@ bool Player::isInSet(std::vector<Card*> cards, Card * c) {
     return std::find(cards.begin(), cards.end(), c) != cards.end();
 }
 
+
+void Player::showHand() {
+    std::cout<<"Voici votre main"<<std::endl;
+    for(Card * card : this->getHand()) {
+        std::cout<<card->getName() + " ";
+    }
+    std::cout<<std::endl;
+}
+
+
 std::string Player::toString() {
     std::string out = "Joueur: " + this->id + "\n   nom: " + this->name + " , humain: ";
     if(this->isHuman) {

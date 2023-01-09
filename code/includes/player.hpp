@@ -73,6 +73,7 @@ class Player {
 
     int calculateVictoryPoints();
     bool isInSet(std::vector<Card *> cards, Card * c);
+    void showHand();
 
 
     std::string toString();
