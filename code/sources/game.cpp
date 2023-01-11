@@ -134,7 +134,7 @@ void Game::play(Player * player) {
     player->clearHand();
 
     //Deck reset
-    adjustment(player);
+    adjustment(player, 5);
     player->setHand();
     std::cout<<"termine!"<<std::endl;
 }
@@ -151,9 +151,9 @@ Player * Game::calculateVictor() {
     return victor;
 }
 
-void Game::adjustment(Player * player) {
+void Game::adjustment(Player * player, int n) {
     
-    if(player->getDeck().size() < 5) {
+    if(player->getDeck().size() < n) {
         std::cout<<"Ajustement"<<std::endl;
         for(Card * card : player->getDiscard()) {
             player->addCardToDeck(card);
@@ -165,7 +165,11 @@ void Game::adjustment(Player * player) {
 
 
 bool Game::validateCommand(std::string cmd) {
-    if(((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5)) || ((cmd[0] == 'c' || cmd[0] == 's') && cmd.size() == 1) ) {
+    
+    if((((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5) && (Game::getIdents()[cmd.substr(2,3)] != nullptr)) 
+        || (((cmd[0] == 'c' || cmd[0] == 's') && cmd.size() == 1))) 
+        || (cmd == "p-P$$")) {
+
         return true;
     } else {
         return false;
@@ -176,6 +180,7 @@ bool Game::validateCommand(std::string cmd) {
 void Game::enterCommand(Player * player, bool * acted) {
     std::string cmd;
     do {
+        std::cout<<"Entrez une commande valide"<<std::endl;
         std::cin>>cmd;
     } while (validateCommand(cmd) == false);
 
@@ -188,7 +193,7 @@ void Game::enterCommand(Player * player, bool * acted) {
                 if(cmd.substr(2,3) != "CVE" && cmd.substr(2,3) != "AGN" && cmd.substr(2,3) != "AUR") {
                     player->setNbCardPlays(player->getNbCardPlays() - 1);
                 }
-                ACM::selectEffect(cmd.substr(2,3), player, idents);
+                ACM::selectEffect(cmd.substr(2,3), player, this);
                 player->removeCardFromHand(card);
                 player->showHand();
             } else {

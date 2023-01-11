@@ -25,11 +25,20 @@ int main() {
     ActionCard workshop = ActionCard("Atelier", "", "ATL", false, false, 3);
     ActionCard lumber = ActionCard("Bucheron", "", "BCH", false, false, 3);
     ActionCard cellar = ActionCard("Cave", "", "CAV", false, false, 2);
+    ActionCard remodel = ActionCard("Rénovation", "", "RNV", false, false, 4);
+    ActionCard chapel = ActionCard("Chappelle", "", "CPL", false, false, 2);
+    ActionCard mine = ActionCard("Mine", "", "MNE", false, false, 5);
+    ActionCard market = ActionCard("Marché", "", "MRC", false, false, 5);
 
     //Transfer cards to idents map
     std::vector<Card*> cardsForMap;
     cardsForMap.push_back(&workshop);
     cardsForMap.push_back(&lumber);
+    cardsForMap.push_back(&cellar);
+    cardsForMap.push_back(&chapel);
+    cardsForMap.push_back(&market);
+    cardsForMap.push_back(&mine);
+
 
     cardsForMap.push_back(&c);
     cardsForMap.push_back(&domain);
@@ -40,6 +49,9 @@ int main() {
     cardsForMap.push_back(&gold);
 
     Game::setupIdents(cardsForMap);
+
+
+    std::cout<<Game::getIdents()["CVE"]->getCost()<<std::endl;
 
     //Test 
     Player p1 = Player("ronald", false);

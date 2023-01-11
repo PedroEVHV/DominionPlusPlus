@@ -47,7 +47,7 @@ public:
     int getPlayerCount();
     std::map<Card *, int> getOC() {return this->otherCards;}
     std::vector<Card *> getTrash() {return this->trash;}
-    std::map<std::string, Card*> getIdents() {return idents;}
+    static std::map<std::string, Card*> getIdents() {return idents;}
 
     void toTrash(Card * card, Player * player, bool b);
     void recover(Card * card, Player * player);
@@ -60,7 +60,7 @@ public:
     void play(Player * player);
     bool checkEOG();
     Player * calculateVictor();
-    void adjustment(Player * player);
+    void adjustment(Player * player, int n);
 
     static bool validateCommand(std::string cmd);
     void enterCommand(Player * player, bool * acted);

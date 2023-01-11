@@ -21,8 +21,12 @@ class ACM {
         Interactions
     */
 
-    static void selectEffect(std::string ident, Player * player, std::map<std::string, Card*> idents);
-    static void addCard(std::string ident, Player * player);
+    static void selectEffect(std::string ident, Player * player, Game * game);
+    static bool addCard(std::string ident, Player * player);
+    static void addRandomCard(Player * player, Game * game);
+    static void trashCards(Player * player, Game * game, int n);
+    static void trashCardUnit(Player * player, Game * game, std::string * cmd);
+    static void trashAndGet(Player * player, Game * game, bool treasure, int extra);
 
 
     /*
@@ -39,7 +43,7 @@ class ACM {
 
     static void TEST1(Player * player);
 
-    static void ATL(Player * player, std::map<std::string, Card*> idents);
+    static void ATL(Player * player);
     static void AVT(Player * player);
     static void BBL(Player * player);
     static void BCH(Player * player);
@@ -52,20 +56,23 @@ class ACM {
     static void SPY(Player * player);
     static void FSN(Player * player);
     static void FSL(Player * player);
-    static void FGN(Player * player);
+    static void FGN(Player * player, Game * game);
     static void JDN(Player * player);
     static void LBT(Player * player);
-    static void MRC(Player * player);
+    static void MRC(Player * player, Game * game);
     static void MLC(Player * player);
-    static void MNE(Player * player);
+    static void MNE(Player * player, Game * game);
     static void PTG(Player * player);
-    static void RNV(Player * player);
+    static void RNV(Player * player, Game * game);
     static void SAT(Player * player);
     static void SRC(Player * player);
     static void VLL(Player * player);
     static void VOL(Player * player);
 
     //Other cards
+
+    static void P$$(Player * player);
+
     static void CVE(Player * player);
     static void AGN(Player * player);
     static void AUR(Player * player);
