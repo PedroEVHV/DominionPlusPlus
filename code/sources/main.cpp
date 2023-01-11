@@ -1,3 +1,37 @@
+/*
+
+______________________________________________________________________________________________________
+|                                      |                                                              |
+|    $$$$$$$\                          |    DOMINION PLUS PLUS :                                      |
+|    $$  __$$\    $$\       $$\        |        Remake of The Dominion game by Rio Grande Games in    |
+|    $$ |  $$ |   $$ |      $$ |       |        C++. By Pedro van Hylckama Vlieg.                     |
+|    $$ |  $$ |$$$$$$$$\ $$$$$$$$\     |                                                              |
+|    $$ |  $$ |\__$$  __|\__$$  __|    |       Code - January 2023                                    |
+|    $$ |  $$ |   $$ |      $$ |       |                                                              |
+|    $$$$$$$  |   \__|      \__|       |    Refer to the provided documentation for specific          |
+|    \_______/                         |    information on this implementation                        |
+|______________________________________|______________________________________________________________|
+
+    
+    
+    
+
+    
+    
+    
+    This is the main execution file. All objects are initialized here. During execution all instances
+    will be called through pointers. 
+
+    The project was built using a Ubuntu WSL environment. It his highly recommended to compile the sources
+    on a Linux platform. 
+
+    An extensive Doxygen-generated documentation is provided or the entire project.
+
+*/
+
+
+
+
 #include <iostream>
 
 

@@ -38,6 +38,8 @@ void ACM::selectEffect(std::string ident, Player * player, Game * game) {
         MNE(player, game);
     } else if(ident == "RNV") {
         RNV(player, game);
+    } else if(ident == "VLL") {
+        VLL(player, game);
     }
 }
 
@@ -53,6 +55,12 @@ void ACM::addRandomCard(Player * player, Game * game) {
     int randInt = (rand() % player->getDeck().size());
     game->adjustment(player, 1);
     player->addCardToHand(player->getDeck()[randInt]);
+}
+
+void ACM::addRandomCardMult(Player * player, Game * game, int nb) {
+    for(int i = 0; i < nb; i++) {
+        addRandomCard(player, game);
+    }
 }
 
 void ACM::trashCards(Player * player, Game * game, int n) {
@@ -149,6 +157,29 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
 }
 
 
+void ACM::addCurseUnit(Player * player, Game * game, Card * c) {
+    player->addCardToDiscard(c);
+}
+
+
+
+void ACM::curseTarget(Player * player, Player * target, Game * game, int n) {
+    Card * curse = Game::getIdents()["MAL"];
+    if(curse == nullptr) {std::cout<<"Fatal error."<<std::endl; exit(0);}
+    if(game->getKingdomCards()[curse] > n) {
+        game->setKingdomCardStack(curse, -n);
+        for(int i = 0; i < n; i++) {
+            addCurseUnit(target, game, curse);
+        }
+    }
+}
+
+
+void ACM::cursePlayers(Player * player, Game * game, int n) {
+    for(Player * p: game->getPlayers()) {
+        curseTarget(player, p, game, n);
+    }
+}
 
 
 
@@ -211,13 +242,14 @@ void ACM::CPL(Player * player, Game * game) {
     {
         std::cin>>cmd;
         bool trashed = false;
-        Card* tobeTrashed;
+        Card* tobeTrashed = nullptr;
         for(Card * card : player->getHand()) {
             if(trashed == false && game->getIdents()[cmd] == card) {
                 game->toTrash(card, player, false);
             }
         }
-        player->removeCardFromHand(tobeTrashed);
+        if(tobeTrashed != nullptr) {player->removeCardFromHand(tobeTrashed);}
+        
         
     } while (cmd != "STOP");
 }
@@ -247,17 +279,36 @@ void ACM::RNV(Player * player, Game * game) {
 }
 
 
+void ACM::SRC(Player * player, Game * game) {
+    addRandomCardMult(player, game, 2);
+    cursePlayers(player, game, 2);
+}
+
+
+void ACM::VLL(Player * player, Game * game) {
+    addActions(player, 2);
+    addRandomCard(player, game);
+}
+
+
 //Other cards
 
 void ACM::P$$(Player * player) {
+    std::vector<Card *> played;
     for(Card * card: player->getHand()) {
         if(card->getCmdID() == "CVE") {
             CVE(player);
+            played.push_back(card);
         } else if(card->getCmdID() == "AGN") {
             AGN(player);
+            played.push_back(card);
         } else if(card->getCmdID() == "AUR") {
             AUR(player);
+            played.push_back(card);
         }
+    }
+    for(Card * card : played) {
+        player->removeCardFromHand(card);
     }
 }
 

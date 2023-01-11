@@ -41,13 +41,14 @@ public:
     ~Game();
 
     //Getters and setters
-    std::vector<Player *> getPlayers();
+    std::vector<Player *> getPlayers() {return this->players;}
     Player * getPlayerById();
     Player * getPlayerByName();
-    int getPlayerCount();
+    int getPlayerCount() {return this->playerCount;}
     std::map<Card *, int> getOC() {return this->otherCards;}
     std::vector<Card *> getTrash() {return this->trash;}
     static std::map<std::string, Card*> getIdents() {return idents;}
+    std::map<Card *, int> getKingdomCards() {return this->kingdomCards;}
 
     void toTrash(Card * card, Player * player, bool b);
     void recover(Card * card, Player * player);
@@ -55,12 +56,14 @@ public:
     void setPlayers(std::vector<Player *> playerList);
     void setCardSet(std::vector<std::string> cardList);
 
+    void setKingdomCardStack(Card * card, int n);
+
 
     void run();
     void play(Player * player);
     bool checkEOG();
     Player * calculateVictor();
-    void adjustment(Player * player, int n);
+    void adjustment(Player * player, unsigned int n);
 
     static bool validateCommand(std::string cmd);
     void enterCommand(Player * player, bool * acted);

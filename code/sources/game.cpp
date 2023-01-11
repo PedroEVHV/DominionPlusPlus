@@ -58,6 +58,10 @@ void Game::recover(Card * card, Player * player) {
     }
 }
 
+void Game::setKingdomCardStack(Card * card, int n) {
+    this->kingdomCards[card] += n;
+}
+
 Game::~Game() {
     
 }
@@ -151,7 +155,7 @@ Player * Game::calculateVictor() {
     return victor;
 }
 
-void Game::adjustment(Player * player, int n) {
+void Game::adjustment(Player * player, unsigned int n) {
     
     if(player->getDeck().size() < n) {
         std::cout<<"Ajustement"<<std::endl;

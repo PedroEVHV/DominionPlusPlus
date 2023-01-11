@@ -24,6 +24,7 @@ class ACM {
     static void selectEffect(std::string ident, Player * player, Game * game);
     static bool addCard(std::string ident, Player * player);
     static void addRandomCard(Player * player, Game * game);
+    static void addRandomCardMult(Player * player, Game * game, int nb);
     static void trashCards(Player * player, Game * game, int n);
     static void trashCardUnit(Player * player, Game * game, std::string * cmd);
     static void trashAndGet(Player * player, Game * game, bool treasure, int extra);
@@ -36,6 +37,9 @@ class ACM {
     static void addPurchasePower(Player * player, int n);
     static void addActions(Player * player, int n);
     static void addPurchases(Player * player, int n);
+    static void addCurseUnit(Player * player, Game * game, Card * c);
+    static void cursePlayers(Player * player, Game * game, int n);
+    static void curseTarget(Player * player, Player * target, Game * game, int n);
 
     /*
         Card effect methods.
@@ -65,8 +69,8 @@ class ACM {
     static void PTG(Player * player);
     static void RNV(Player * player, Game * game);
     static void SAT(Player * player);
-    static void SRC(Player * player);
-    static void VLL(Player * player);
+    static void SRC(Player * player, Game * game);
+    static void VLL(Player * player, Game * game);
     static void VOL(Player * player);
 
     //Other cards
