@@ -20,8 +20,8 @@ Installation goes as follows :
 1) Download all the libraries the project requires
 2) Download the sources 
 3) Add the libraries to the project
-4) Change the INCLUDEX variable in the Makefile to your correct path
-5) Compile and execute !
+4) compile adding the ARGS parameter with the path leading to the /includes folder
+5) execute !
 
 ## Playing instructions
 
@@ -36,5 +36,4 @@ The rules are the same as in the original game. For complete instructions on how
 ## Libraries 
 
 Here is the list of required libraries. Follow their respective installation instructions. For header only libraries just add a folder with the headers to the includes folder.
-
-* RapidJson: Download [here](https://github.com/Tencent/rapidjson/archive/refs/tags/v1.1.0.zip) and copy the ```include/rapidjson``` folder. 
+  NONE
