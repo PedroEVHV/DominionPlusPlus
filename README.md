@@ -21,7 +21,7 @@ Installation goes as follows :
 2) Download the sources 
 3) Add the libraries to the project
 4) Change the INCLUDEX variable in the Makefile to your correct path
-5) Compile and execute !
+5) execute !
 
 ## Playing instructions
 
