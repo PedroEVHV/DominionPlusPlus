@@ -20,7 +20,7 @@ Installation goes as follows :
 1) Download all the libraries the project requires
 2) Download the sources 
 3) Add the libraries to the project
-4) Change the INCLUDEX variable in the Makefile to your correct path
+4) compile adding the ARGS parameter with the path leading to the /includes folder
 5) execute !
 
 ## Playing instructions
