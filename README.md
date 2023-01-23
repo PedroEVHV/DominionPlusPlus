@@ -36,5 +36,4 @@ The rules are the same as in the original game. For complete instructions on how
 ## Libraries 
 
 Here is the list of required libraries. Follow their respective installation instructions. For header only libraries just add a folder with the headers to the includes folder.
-
-* RapidJson: Download [here](https://github.com/Tencent/rapidjson/archive/refs/tags/v1.1.0.zip) and copy the ```include/rapidjson``` folder. 
+  NONE
