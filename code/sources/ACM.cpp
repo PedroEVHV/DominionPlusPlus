@@ -10,20 +10,25 @@
 
 
 //
+/**
+ * @brief calls card effect
+ * 
+ * @param ident card id 
+ * @param player current player
+ * @param game current game
+ */
 void ACM::selectEffect(std::string ident, Player * player, Game * game) {
     std::cout<<ident<<std::endl;
     if(ident == "ATL") {
-        ATL(player);
+        ATL(player, game);
     } else if(ident == "CVE") {
         CVE(player);
     } else if(ident == "AGN") {
         AGN(player);
-    } else if(ident == "P$$") {
-        P$$(player);
+    } else if(ident == "P__") {
+        P__(player);
     } else if(ident == "AUR") {
         AUR(player);
-    } else if(ident == "ATL") {
-        ATL(player);
     } else if(ident == "CPL") {
         CPL(player, game);
     } else if(ident == "BCH") {
@@ -40,29 +45,62 @@ void ACM::selectEffect(std::string ident, Player * player, Game * game) {
         RNV(player, game);
     } else if(ident == "VLL") {
         VLL(player, game);
+    } else if(ident == "SAT") {
+        SAT(player, game);
     }
 }
 
+/**
+ * @brief Elementary action. Adds a card to the hand from the deck
+ * 
+ * @param ident id of card 
+ * @param player player to give the card to
+ * @return true 
+ * @return false 
+ */
 bool ACM::addCard(std::string ident, Player * player) {
     if(Game::getIdents()[ident] == nullptr) {
         return false;
     } else {
-        player->addCardToHand(Game::getIdents()[ident]);
+        player->addCardToDiscard(Game::getIdents()[ident]);
+        return true;
     }
 }
 
+/**
+ * @brief Picks a card from the deck
+ * 
+ * @param player player picking card
+ * @param game current game
+ */
 void ACM::addRandomCard(Player * player, Game * game) {
-    int randInt = (rand() % player->getDeck().size());
     game->adjustment(player, 1);
+    int randInt = (rand() % player->getDeck().size());
     player->addCardToHand(player->getDeck()[randInt]);
 }
 
+
+/**
+ * @brief adds multiple random cards
+ * 
+ * @param player player picking cards
+ * @param game current game
+ * @param nb nb of times addRandomCard() will be called
+ */
 void ACM::addRandomCardMult(Player * player, Game * game, int nb) {
     for(int i = 0; i < nb; i++) {
         addRandomCard(player, game);
     }
 }
 
+
+/**
+ * @brief allows player to trash multiple cards
+ * 
+ * @param player player trashing card
+ * @param game current game
+ * @param n maximum cards that can be trashed
+ */
 void ACM::trashCards(Player * player, Game * game, int n) {
     std::string cmd;
     int nbDiscards = 0;
@@ -89,21 +127,28 @@ void ACM::trashCards(Player * player, Game * game, int n) {
     
 }
 
-
+/**
+ * @brief Method for trashing only one card.
+ * 
+ * @param player player trashing card
+ * @param game current game
+ * @param cmd id of card to be trashed
+ */
 void ACM::trashCardUnit(Player * player, Game * game, std::string * cmd) {
 
     
     std::cin>>*cmd;
     bool discarded = false;
-    Card* toBeDiscarded;
+    Card* toBeTrashed;
     for(Card * card : player->getHand()) {
         if(discarded == false && game->getIdents()[*cmd] == card) {
-            player->addCardToDiscard(card);
-            toBeDiscarded = card;
+            
+            toBeTrashed = card;
             discarded = true;
+            game->toTrash(toBeTrashed, player, true);
         }
     }
-    player->removeCardFromHand(toBeDiscarded);
+    player->removeCardFromHand(toBeTrashed);
 }
 
 
@@ -115,7 +160,7 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
         {
             std::cin>>cmd;
             if(Game::getIdents()[cmd] != nullptr) {
-                if(Game::getIdents()[cmd]->getType() == "Tresor" && player->isInSet(player->getHand(), Game::getIdents()[cmd])) {
+                if(Game::getIdents()[cmd]->getType() == "Tresor" && player->isInSet(player->getHand(), Game::getIdents()[cmd]) && game->getKingdomCards().find( Game::getIdents()[cmd]) != game->getKingdomCards().end()) {
                     game->toTrash(Game::getIdents()[cmd], player, true);
                     std::cout<<"Choisissez votre carte"<<std::endl;
                     std::string id;
@@ -141,7 +186,7 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
         int worth = Game::getIdents()[cmd]->getCost() + 2;
         do
         {
-            std::cout<<"Entrez un identificateur valide"<<std::endl;
+            std::cout<<"Maintenant choisissez la nouvelle carte trésor.\nEntrez un identificateur valide"<<std::endl;
             std::cin>>cmd;
             if(Game::getIdents().find(cmd) != Game::getIdents().end()) {
                 if(Game::getIdents()[cmd]->getCost() <= worth) {
@@ -204,16 +249,19 @@ void ACM::addActions(Player * player, int n) {
     The applyEffect() method will call one of the following functions.
 */
 
-void ACM::ATL(Player * player) {
+void ACM::ATL(Player * player, Game * game) {
     std::cout<<"Carte Atelier. Choisissez une carte valant au plus 4.\nEntrez un identificateur valide"<<std::endl;
     std::string cmd;
     do
     {
         std::cin>>cmd;
         if(Game::getIdents()[cmd] != nullptr && Game::getIdents()[cmd]->getCost() > 4) {
-            std::cout<<"Cette carte vaut pus que 4. Choisissez-en une autre.\n";
+            if(game->getKingdomCards().find(Game::getIdents()[cmd]) != game->getKingdomCards().end())
+            std::cout<<"Cette carte vaut plus que 4. Choisissez-en une autre.\n";
         }
     } while (Game::getIdents()[cmd] == nullptr);
+    player->addCardToDiscard(Game::getIdents()[cmd]);
+    game->getKingdomCards()[Game::getIdents()[cmd]]--;
     
 
 }
@@ -227,9 +275,23 @@ void ACM::BCH(Player * player) {
 
 void ACM::CAV(Player * player, Game * game) {
     addActions(player, 1);
-    
-    std::cout<<"Vous pouvez défausser autant de que vous le souhaitez.\nEntrez un identificateur. Entrez STOP pour passer."<<std::endl;
-    
+    std::string cmd;
+    std::vector<Card*> tobeDiscarded;
+    std::cout<<"Vous pouvez défausser autant de cartes que vous le souhaitez.\nEntrez un identificateur. Entrez STOP pour passer."<<std::endl;
+    int cpt = 0;
+    do {
+        std::cout<<"Entrez un identificateur.\n";
+        std::cin>>cmd;
+        if(Game::getIdents()[cmd] != nullptr && player->isInSet(player->getHand(), Game::getIdents()[cmd])) {
+            tobeDiscarded.push_back(Game::getIdents()[cmd]);
+            cpt++;
+        }
+    } while(cmd != "STOP" && player->getHand().size() > 0);
+    for(Card * card : tobeDiscarded) {
+        player->removeCardFromHand(card);
+        player->addCardToDiscard(card);
+    }
+    addRandomCardMult(player, game, cpt);
     
     
 }
@@ -290,10 +352,22 @@ void ACM::VLL(Player * player, Game * game) {
     addRandomCard(player, game);
 }
 
+void ACM::SAT(Player * player, Game * game) {
+    std::string cmd;
+    do
+    {
+        std::cout<<"Choisissez une carte de votre main à jouer deux fois. Entrez un identificateur valide. \nEntrez STOP si vous n'avez plus de cartes en main"<<std::endl;
+        std::cin>>cmd;
+    } while (Game::getIdents()[cmd] != nullptr && player->isInSet(player->getHand(), Game::getIdents()[cmd]));
+    selectEffect(cmd, player, game);
+    selectEffect(cmd, player, game);
+    
+}
+
 
 //Other cards
 
-void ACM::P$$(Player * player) {
+void ACM::P__(Player * player) {
     std::vector<Card *> played;
     for(Card * card: player->getHand()) {
         if(card->getCmdID() == "CVE") {
@@ -309,6 +383,7 @@ void ACM::P$$(Player * player) {
     }
     for(Card * card : played) {
         player->removeCardFromHand(card);
+        player->addCardToDiscard(card);
     }
 }
 

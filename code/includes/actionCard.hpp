@@ -15,7 +15,7 @@ class ActionCard : public Card {
     public:
     
     ActionCard(std::string name, std::string eD, std::string cmdID, bool react, bool attack, int cost);
-    ~ActionCard();
+
 
     std::string getActID() {return this->effectID;}
     std::string getActionType() {return this->actionType;}

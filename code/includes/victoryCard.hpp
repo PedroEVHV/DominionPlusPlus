@@ -12,7 +12,6 @@ class VictoryCard : public Card {
 
     public:
     VictoryCard(std::string name, std::string eD, std::string cmdID, int points, int cost);
-    ~VictoryCard();
 
     
     std::string toString();

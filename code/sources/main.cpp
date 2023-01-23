@@ -63,6 +63,9 @@ int main() {
     ActionCard chapel = ActionCard("Chappelle", "", "CPL", false, false, 2);
     ActionCard mine = ActionCard("Mine", "", "MNE", false, false, 5);
     ActionCard market = ActionCard("Marché", "", "MRC", false, false, 5);
+    ActionCard smithy = ActionCard("Forgeron", "", "FGN", false, false, 4);
+    ActionCard village = ActionCard("Village", "", "VLL", false, false, 3);
+    ActionCard witch = ActionCard("Sorcière", "", "SRC", false, true, 5);
 
     //Transfer cards to idents map
     std::vector<Card*> cardsForMap;
@@ -84,22 +87,49 @@ int main() {
 
     Game::setupIdents(cardsForMap);
 
-
-    std::cout<<Game::getIdents()["CVE"]->getCost()<<std::endl;
-
     //Test 
-    Player p1 = Player("ronald", false);
-    Player p2 = Player("james", false);
-    std::vector<Player *> players = {&p1, &p2};
+    int n;
+    char term;
+    std::cout<<"Choisissez le nombre de joueurs"<<std::endl;
+    std::cin>>n;
+    while (!std::cin.good()) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin>>n;
+    }
+    
+    
+    std::vector<Player *> players;
+    for(int i = 0; i < n; i++) {
+        std::string name;
+        std::cout<<"Nom du joueur: "<<std::endl;
+        std::cin>>name;
+        Player * p = new Player(name, true);
+        players.push_back(p);
+    }
 
     
-    std::vector<Card *> cards = {};
+    std::vector<Card *> cards = {&workshop, &lumber, &cellar, &remodel, &chapel, &mine, &market, &village, &witch, &smithy};
     Game test = Game(players, cards, &province, &duche, &domain, &c, &copper, &silver, &gold);
+
+
+    //std::cout<<test.getKingdomCards().size()<<std::endl;
+    std::cout<<"1------"<<std::endl;
+
+    //players[0]->~Player();
     
     
-    test.run();
+    //test.run();
 
 
+    //Memory free
+    std::cout<<"2------"<<std::endl;
+    players.clear();
+    std::cout<<"3------"<<std::endl;
+    cards.clear();
 
+std::cout<<"4------"<<std::endl;
+    
+std::cout<<"5------"<<std::endl;
     return 0;
 }//

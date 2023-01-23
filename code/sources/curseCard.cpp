@@ -6,10 +6,6 @@ CurseCard::CurseCard(std::string name, std::string eD, std::string cmdID,  int m
     this->malus = malus;
 }
 
-CurseCard::~CurseCard() {
-
-}
-
 std::string CurseCard::toString() {
     
 }

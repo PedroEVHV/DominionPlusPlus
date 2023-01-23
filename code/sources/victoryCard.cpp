@@ -4,10 +4,6 @@ VictoryCard::VictoryCard(std::string name, std::string eD, std::string cmdID, in
     this->points = points;
 }
 
-VictoryCard::~VictoryCard() {
-
-}
-
 std::string VictoryCard::toString() {
     
 }

@@ -1,19 +1,59 @@
+/**
+ * @file game.cpp
+ * @author Pedro van Hylckama Vlieg (pevhv.2001@gmail.com)
+ * @brief File containing method definitions for Game class
+ * @version 0.1
+ * @date 2023-01-11
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+
 #include "game.hpp"
 #include "ACM.hpp"
 
+/**
+ * @brief Limit on the amount of cardsets available to the player. Currently used for test purposes and might change from one version to another.
+ * 
+ */
 #define CARDSETS 2
 
-
+/**
+ * @brief idCounter is used to build the Id's for Game instances.
+ * 
+ */
 int Game::idCounter = 0;
 
 std::map<std::string, Card *> Game::idents;
 
+/**
+ * @brief sets up the map linking the card pointers to their respective identification strings.
+ * 
+ * @param cards vector<Card*> of all card pointers necessary for the game.
+ */
 void Game::setupIdents(std::vector<Card*> cards) {
     for(Card * card: cards) {
         idents.insert(std::pair<std::string, Card*>(card->getCmdID(), card));
     }
 }
 //
+
+
+/**
+ * @brief Construct a new Game:: Game object. Also sets up the different components of the game, for example, player hands and decks
+ * 
+ * 
+ * @param playerList vector of Player pointers 
+ * @param cardList vector of Card pointers. This includes all kingdom cards needed for one game
+ * @param province special pointer for province card
+ * @param duchy special pointer for duchy card
+ * @param domain special pointer for domain card
+ * @param curse special pointer for curse card
+ * @param copper special pointer for copper card
+ * @param silver special pointer for silver card
+ * @param gold special pointer for gold card
+ */
 Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList, 
             Card * province, Card * duchy, Card * domain, Card * curse, 
             Card * copper, Card * silver, Card * gold) {
@@ -42,7 +82,13 @@ Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList,
     
 }
 
-
+/**
+ * @brief Trashes cards, removing them permanently from the game
+ * 
+ * @param card selected card to be trashed
+ * @param player player acting the trash
+ * @param b sould always be called true, used for test purposes 
+ */
 void Game::toTrash(Card * card, Player * player, bool b) {
     this->trash.push_back(card);
     if(b) {
@@ -51,6 +97,12 @@ void Game::toTrash(Card * card, Player * player, bool b) {
     
 }
 
+/**
+ * @brief removes a card from the trash if an action card requires it
+ * 
+ * @param card selected card
+ * @param player player acting the recovery. Recovered card is sent to his dicard pile
+ */
 void Game::recover(Card * card, Player * player) {
     if(std::find(this->trash.begin(), this->trash.end(), card) != this->trash.end()) {
         int i = 0; for(auto c: this->trash) {if(card == c) {this->trash.erase(this->trash.begin() + i); return;} else {i++;}}
@@ -58,18 +110,41 @@ void Game::recover(Card * card, Player * player) {
     }
 }
 
+/**
+ * @brief creates the pile for a kingdom card.
+ * 
+ * @param card card targeted
+ * @param n amount of card on the pile
+ */
 void Game::setKingdomCardStack(Card * card, int n) {
     this->kingdomCards[card] += n;
 }
 
+/**
+ * @brief Destroy the Game:: Game object. Standard destruction and memory freeing
+ * 
+ */
 Game::~Game() {
+    for(Player * player : players) {
+        delete player;
+    }
+    idents.clear();
+    this->players.clear();
+    this->otherCards.clear();
+    this->kingdomCards.clear();
+    this->trash.clear();
     
 }
 
+
+/**
+ * @brief Main game loop. All interactions are done within it's scope
+ * 
+ */
 void Game::run() {
     std::cout<<"Demarrage partie: "<<std::endl;
     int nbtest = 0; //TESTS
-    while(this->checkEOG() == true && nbtest < 10) { //TESTS
+    while(this->checkEOG() == true && nbtest < 1000) { //TESTS
         std::cout<<"Tour " + this->currTurn<<std::endl;
         for(Player * player: this->players) {
             this->currPlayer = player;
@@ -85,6 +160,13 @@ void Game::run() {
     std::cout<<"Partie terminee.\nLe gagnant est: " + this->calculateVictor()->getName()<<std::endl;
 }
 
+
+/**
+ * @brief Checks if the game meets the end-game conditions
+ * 
+ * @return true if game should end
+ * @return false if otherwise
+ */
 bool Game::checkEOG() {
     std::cout<<"Verification fin de jeu... ";
     int amount = 0;
@@ -108,6 +190,12 @@ bool Game::checkEOG() {
 
 }
 
+
+/**
+ * @brief Method for managing a player's actions during his turn.
+ * 
+ * @param player player currently playing
+ */
 void Game::play(Player * player) {
 
     player->showHand();
@@ -138,11 +226,23 @@ void Game::play(Player * player) {
     player->clearHand();
 
     //Deck reset
+    if(player->getHand().size() > 1) {
+        for(Card * card : player->getHand()) {
+            player->addCardToDiscard(card);
+        }
+        player->clearHand();
+    }
     adjustment(player, 5);
+
     player->setHand();
     std::cout<<"termine!"<<std::endl;
 }
 
+/**
+ * @brief Returns the player with the highest amount of Victory Points. If multiple winners are detected only the first one is returned (no draws allowed here !)
+ * 
+ * @return Player* the winner
+ */
 Player * Game::calculateVictor() {
     Player * victor;
     int points = 0;
@@ -155,6 +255,12 @@ Player * Game::calculateVictor() {
     return victor;
 }
 
+/**
+ * @brief Resets decks and discards if there are not enough cards to pick for next turn or for next action
+ * 
+ * @param player player whose sets are adjusted
+ * @param n threshold at which point an adjustment is considered necessary, e.g. if n = 4, adjustment will start if there are less than 4 cards in the deck
+ */
 void Game::adjustment(Player * player, unsigned int n) {
     
     if(player->getDeck().size() < n) {
@@ -167,33 +273,45 @@ void Game::adjustment(Player * player, unsigned int n) {
     }
 }
 
-
-bool Game::validateCommand(std::string cmd) {
+/**
+ * @brief Recieves player command and verifies it
+ * 
+ * @param cmd 
+ * @return true if the command can be interpreted
+ * @return false if not
+ */
+bool Game::validateCommand(std::string cmd, std::map<Card *, int> kc) {
     
     if((((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5) && (Game::getIdents()[cmd.substr(2,3)] != nullptr)) 
         || (((cmd[0] == 'c' || cmd[0] == 's') && cmd.size() == 1))) 
-        || (cmd == "p-P$$")) {
-
-        return true;
+        || (cmd == "p-P__")) {
+        Card * c = Game::getIdents()[cmd.substr(2,3)];
+        
+        return (kc.find(c) != kc.end() || cmd == "p-P__" || cmd.substr(0, 1) == "b");
     } else {
         return false;
     }
 }
 
-
+/**
+ * @brief Allows the player to enter a command corresponding to their game move. Commands will be verified and interpreted if correct.
+ * 
+ * @param player player entering command
+ * @param acted boolean defining if the player has finished the action phase
+ */
 void Game::enterCommand(Player * player, bool * acted) {
     std::string cmd;
     do {
         std::cout<<"Entrez une commande valide"<<std::endl;
         std::cin>>cmd;
-    } while (validateCommand(cmd) == false);
+    } while (validateCommand(cmd, this->kingdomCards) == false);
 
     
 
     if (cmd[0] == 'p' && cmd[1] == '-') {
         if(!*acted) {
            Card * card = idents[cmd.substr(2,3)];
-            if(player->getNbCardPlays() > 0 && player->isInSet(player->getHand(), card)) {
+            if((player->getNbCardPlays() > 0 && player->isInSet(player->getHand(), card))||cmd.substr(2,3) == "P__") {
                 if(cmd.substr(2,3) != "CVE" && cmd.substr(2,3) != "AGN" && cmd.substr(2,3) != "AUR") {
                     player->setNbCardPlays(player->getNbCardPlays() - 1);
                 }
@@ -218,6 +336,9 @@ void Game::enterCommand(Player * player, bool * acted) {
             player->addCardToDiscard(card);
             player->setNbPurchases(player->getNbPurchases() - 1);
             player->setPurchasePower(player->getPurchasePower() - card->getCost());
+            if(card->getType() == "Action") {
+                this->kingdomCards[card]--;
+            }
         } else {
             std::cout<<"Vous ne pouvez pas acheter cette carte.";
             if(card->getCost() > player->getPurchasePower()) {
@@ -245,7 +366,11 @@ void Game::enterCommand(Player * player, bool * acted) {
     }
 }
 
-
+/**
+ * @brief Kingdom card selection choice. 
+ * 
+ * @param cards All possible kingdom cards.
+ */
 void Game::chooseCardsInit(std::vector<Card *> cards) {
     int cmd;
     std::cout<<"Choisissez un set de cartes royaume"<<std::endl;

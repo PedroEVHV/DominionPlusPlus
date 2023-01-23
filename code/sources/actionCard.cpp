@@ -8,10 +8,6 @@ ActionCard::ActionCard(std::string name, std::string eD, std::string cmdID, bool
     this->attack = attack;
 }
 
-ActionCard::~ActionCard() {
-
-}
-
 std::string ActionCard::toString() {
     
 }

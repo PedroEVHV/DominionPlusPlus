@@ -65,7 +65,7 @@ public:
     Player * calculateVictor();
     void adjustment(Player * player, unsigned int n);
 
-    static bool validateCommand(std::string cmd);
+    static bool validateCommand(std::string cmd, std::map<Card *, int> kc);
     void enterCommand(Player * player, bool * acted);
     static void setupIdents(std::vector<Card*> cards);
 

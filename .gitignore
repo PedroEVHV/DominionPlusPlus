@@ -1,0 +1,46 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#doxygen
+*.html
+*.js
+*.png
+*.svg
+*.css
+*.tex
+*.eps
+*.sty
+*.bat
+
+# All .h files will be ignored as they are part of the different libraries. Only .hpp headers will be pushed
+*.h

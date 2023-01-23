@@ -12,7 +12,6 @@ MoneyCard::MoneyCard(std::string name, std::string eD, std::string cmdID,  int w
     }
 }
 
-MoneyCard::~MoneyCard() {}
 
 std::string MoneyCard::toString() {
     

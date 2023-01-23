@@ -47,7 +47,7 @@ class ACM {
 
     static void TEST1(Player * player);
 
-    static void ATL(Player * player);
+    static void ATL(Player * player, Game * game);
     static void AVT(Player * player);
     static void BBL(Player * player);
     static void BCH(Player * player);
@@ -68,14 +68,14 @@ class ACM {
     static void MNE(Player * player, Game * game);
     static void PTG(Player * player);
     static void RNV(Player * player, Game * game);
-    static void SAT(Player * player);
+    static void SAT(Player * player, Game * game);
     static void SRC(Player * player, Game * game);
     static void VLL(Player * player, Game * game);
     static void VOL(Player * player);
 
     //Other cards
 
-    static void P$$(Player * player);
+    static void P__(Player * player);
 
     static void CVE(Player * player);
     static void AGN(Player * player);
