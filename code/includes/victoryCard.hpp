@@ -5,6 +5,10 @@
 #include "card.hpp"
 #include "player.hpp"
 
+/**
+ * @brief Victory cards provide the player with victory points necessary for them to win.
+ * 
+ */
 class VictoryCard : public Card {
     protected:
     int points;

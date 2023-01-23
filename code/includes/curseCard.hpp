@@ -4,7 +4,10 @@
 #include "card.hpp"
 #include "player.hpp"
 
-
+/**
+ * @brief Class for the curse card. Allows for removing Victory points of players.
+ * 
+ */
 class CurseCard : public Card {
     private:
     int malus;

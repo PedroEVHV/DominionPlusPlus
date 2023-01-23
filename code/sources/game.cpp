@@ -58,9 +58,14 @@ Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList,
             Card * province, Card * duchy, Card * domain, Card * curse, 
             Card * copper, Card * silver, Card * gold) {
 
+    //Gold and silver are unused for now because there is no game setup requiring them from the start.
+    gold->getCmdID();
+    silver->getCmdID();
+    //This is just to remove the warning
+
     this->id = "GAME" + std::to_string(idCounter);
     idCounter++;
-    this->currTurn = 0;
+    
     
     for(unsigned int i = 0; i < cardList.size(); i++) {
         this->kingdomCards.insert(std::pair<Card*, int>(cardList[i], 10));
@@ -78,7 +83,7 @@ Game::Game(std::vector<Player *> playerList, std::vector<Card *> cardList,
     this->otherCards.insert(std::pair<Card *, int>(domain, 12));
     this->otherCards.insert(std::pair<Card *, int>(duchy, 12));
     this->otherCards.insert(std::pair<Card *, int>(province, 12));
-    
+    this->turnCount = 0;
     
 }
 
@@ -142,21 +147,36 @@ Game::~Game() {
  * 
  */
 void Game::run() {
-    std::cout<<"Demarrage partie: "<<std::endl;
+    
+    
+    std::cout<<"----------------------Demarrage partie: -----------------------------------------"<<std::endl;
+    
     int nbtest = 0; //TESTS
-    while(this->checkEOG() == true && nbtest < 1000) { //TESTS
-        std::cout<<"Tour " + this->currTurn<<std::endl;
+    bool cont = true;
+    while(this->checkEOG() == true && nbtest < 1000 && surrenders.size() < players.size() - 1) { //TESTS
+    this->turnCount++;
+        std::cout<<"\tTour "<<this->turnCount<<std::endl;
         for(Player * player: this->players) {
-            this->currPlayer = player;
-            std::cout<<this->currPlayer->getName() + " joue actuellement...\n";
+            if(cont) {
+                this->currPlayer = player;
+                
+                if(std::find(surrenders.begin(), surrenders.end(), currPlayer) == surrenders.end()) {
+                    std::cout<< "\t\t " + this->currPlayer->getName() + " joue actuellement...\n";
+                    this->play(currPlayer);
+                }
+                if (surrenders.size() == players.size() - 1)
+                {
+                    cont = false;
+                }
+            }
             
-            this->play(currPlayer);
+            
+            
             
             nbtest++; //TESTS
 
         }
     }
-
     std::cout<<"Partie terminee.\nLe gagnant est: " + this->calculateVictor()->getName()<<std::endl;
 }
 
@@ -168,7 +188,7 @@ void Game::run() {
  * @return false if otherwise
  */
 bool Game::checkEOG() {
-    std::cout<<"Verification fin de jeu... ";
+    std::cout<<"--- Verification fin de jeu... ";
     int amount = 0;
     for(const std::pair<Card *, int> elem : this->otherCards) {
         
@@ -185,7 +205,7 @@ bool Game::checkEOG() {
             return false;
         }
     }
-    std::cout<<"Verification terminee"<<std::endl;
+    std::cout<<"--- Verification terminee"<<std::endl;
     return true;
 
 }
@@ -208,12 +228,12 @@ void Game::play(Player * player) {
     bool acted = false;
 
     do {
-        std::cout<<"Voici votre pouvoir d'achat: "<<player->getPurchasePower()<<" sur "<<player->getNbPurchases()<<" achats."<<std::endl<<"et vous pouvez jouer encore "<<player->getNbCardPlays()<<" cartes."<<std::endl;
+        std::cout<<"-> Voici votre pouvoir d'achat: "<<player->getPurchasePower()<<" sur "<<player->getNbPurchases()<<" achats."<<std::endl<<"et vous pouvez jouer encore "<<player->getNbCardPlays()<<" cartes."<<std::endl;
 
         this->enterCommand(player, &acted);
     } while (player->getNbCardPlays() > 0 || player->getNbPurchases() > 0);
     
-    std::cout<<"plus d'actions possibles"<<std::endl;
+    std::cout<<"-> plus d'actions possibles"<<std::endl;
     
 
     
@@ -264,7 +284,7 @@ Player * Game::calculateVictor() {
 void Game::adjustment(Player * player, unsigned int n) {
     
     if(player->getDeck().size() < n) {
-        std::cout<<"Ajustement"<<std::endl;
+        std::cout<<"-- Ajustement --"<<std::endl;
         for(Card * card : player->getDiscard()) {
             player->addCardToDeck(card);
             
@@ -281,7 +301,9 @@ void Game::adjustment(Player * player, unsigned int n) {
  * @return false if not
  */
 bool Game::validateCommand(std::string cmd, std::map<Card *, int> kc) {
-    
+    if(cmd.size() == 1 && cmd == "s") {
+        return true;
+    } 
     if((((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5) && (Game::getIdents()[cmd.substr(2,3)] != nullptr)) 
         || (((cmd[0] == 'c' || cmd[0] == 's') && cmd.size() == 1))) 
         || (cmd == "p-P__")) {
@@ -305,6 +327,7 @@ void Game::enterCommand(Player * player, bool * acted) {
         std::cout<<"Entrez une commande valide"<<std::endl;
         std::cin>>cmd;
     } while (validateCommand(cmd, this->kingdomCards) == false);
+    std::cout<<"\n";
 
     
 
@@ -360,17 +383,17 @@ void Game::enterCommand(Player * player, bool * acted) {
         
         if(surrender == "O") {
             //surrender
-            exit(0);
+            player->setNbCardPlays(0);
+            player->setNbPurchases(0);
+            player->setVictoryPoints(-1000000);
+            this->surrenders.push_back(player);
+     
         }
         
     }
 }
 
-/**
- * @brief Kingdom card selection choice. 
- * 
- * @param cards All possible kingdom cards.
- */
+/*TEMPORARILY DISABLED
 void Game::chooseCardsInit(std::vector<Card *> cards) {
     int cmd;
     std::cout<<"Choisissez un set de cartes royaume"<<std::endl;
@@ -389,4 +412,4 @@ void Game::chooseCardsInit(std::vector<Card *> cards) {
         break;
     }
 
-}
+}*/

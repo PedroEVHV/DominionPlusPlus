@@ -10,6 +10,10 @@
 #include <algorithm>
 #include <map>
 
+/**
+ * @brief Abstract class used for the different Action effects. Every card has a method called by the selectEffect() method. Also includes elementary actions for easier future card design.
+ * 
+ */
 class ACM {
     protected:
     
@@ -37,9 +41,9 @@ class ACM {
     static void addPurchasePower(Player * player, int n);
     static void addActions(Player * player, int n);
     static void addPurchases(Player * player, int n);
-    static void addCurseUnit(Player * player, Game * game, Card * c);
-    static void cursePlayers(Player * player, Game * game, int n);
-    static void curseTarget(Player * player, Player * target, Game * game, int n);
+    static void addCurseUnit(Player * player, Card * c);
+    static void cursePlayers(Game * game, int n);
+    static void curseTarget(Player * target, Game * game, int n);
 
     /*
         Card effect methods.

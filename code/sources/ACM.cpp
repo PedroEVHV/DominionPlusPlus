@@ -18,7 +18,6 @@
  * @param game current game
  */
 void ACM::selectEffect(std::string ident, Player * player, Game * game) {
-    std::cout<<ident<<std::endl;
     if(ident == "ATL") {
         ATL(player, game);
     } else if(ident == "CVE") {
@@ -103,7 +102,7 @@ void ACM::addRandomCardMult(Player * player, Game * game, int nb) {
  */
 void ACM::trashCards(Player * player, Game * game, int n) {
     std::string cmd;
-    int nbDiscards = 0;
+    unsigned int nbDiscards = 0;
     if(n == -1) {
         
         do
@@ -152,6 +151,14 @@ void ACM::trashCardUnit(Player * player, Game * game, std::string * cmd) {
 }
 
 
+/**
+ * @brief Allows for the action of trashing and getting a new card from it. 
+ * 
+ * @param player player acting the trash
+ * @param game current game
+ * @param treasure boolean that determines whether the trash concerns treasure/money cards
+ * @param extra tells how much more the recieved card can be worth compared to the trashed one.
+ */
 void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
     std::cout<<"Choisissez une carte à écarter"<<std::endl;
     std::string cmd;
@@ -183,7 +190,7 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
             std::cout<<"Entrez un identificateur valide"<<std::endl;
             std::cin>>cmd;
         } while (Game::getIdents()[cmd]->getType() != "Tresor" && player->isInSet(player->getHand(), Game::getIdents()[cmd]));
-        int worth = Game::getIdents()[cmd]->getCost() + 2;
+        int worth = Game::getIdents()[cmd]->getCost() + extra;
         do
         {
             std::cout<<"Maintenant choisissez la nouvelle carte trésor.\nEntrez un identificateur valide"<<std::endl;
@@ -202,27 +209,44 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
 }
 
 
-void ACM::addCurseUnit(Player * player, Game * game, Card * c) {
+/**
+ * @brief Adds a curse card to a player's deck
+ * 
+ * @param player targeted player
+ * @param c curse card
+ */
+void ACM::addCurseUnit(Player * player, Card * c) {
     player->addCardToDiscard(c);
 }
 
 
-
-void ACM::curseTarget(Player * player, Player * target, Game * game, int n) {
+/**
+ * @brief Curses a target, i.e. adds a certain amount of curse cards to the target's deck
+ * 
+ * @param target player targeted
+ * @param game current game
+ * @param n amount of curses
+ */
+void ACM::curseTarget(Player * target, Game * game, int n) {
     Card * curse = Game::getIdents()["MAL"];
     if(curse == nullptr) {std::cout<<"Fatal error."<<std::endl; exit(0);}
     if(game->getKingdomCards()[curse] > n) {
         game->setKingdomCardStack(curse, -n);
         for(int i = 0; i < n; i++) {
-            addCurseUnit(target, game, curse);
+            addCurseUnit(target, curse);
         }
     }
 }
 
-
-void ACM::cursePlayers(Player * player, Game * game, int n) {
+/**
+ * @brief Curses all players n times
+ * 
+ * @param game current game
+ * @param n amount of curses
+ */
+void ACM::cursePlayers(Game * game, int n) {
     for(Player * p: game->getPlayers()) {
-        curseTarget(player, p, game, n);
+        curseTarget(p, game, n);
     }
 }
 
@@ -232,14 +256,32 @@ void ACM::cursePlayers(Player * player, Game * game, int n) {
     Elementary actions
 */
 
+/**
+ * @brief Adds n purchase power to the player for this turn
+ * 
+ * @param player targeted player
+ * @param n amount of purchasing power
+ */
 void ACM::addPurchasePower(Player * player, int n) {
     player->setPurchasePower(player->getPurchasePower() + n);
 }
 
+/**
+ * @brief Adds n purchases to the player for this turn
+ * 
+ * @param player targeted player
+ * @param n amount of purchases
+ */
 void ACM::addPurchases(Player * player, int n) {
     player->setNbPurchases(player->getNbPurchases() + n);
 }
 
+/**
+ * @brief  Adds n actions to the player for this turn
+ * 
+ * @param player targeted player
+ * @param n amount of actions
+ */
 void ACM::addActions(Player * player, int n) {
     player->setNbCardPlays(player->getNbCardPlays() + n);
 }
@@ -249,6 +291,12 @@ void ACM::addActions(Player * player, int n) {
     The applyEffect() method will call one of the following functions.
 */
 
+/**
+ * @brief Workshop card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::ATL(Player * player, Game * game) {
     std::cout<<"Carte Atelier. Choisissez une carte valant au plus 4.\nEntrez un identificateur valide"<<std::endl;
     std::string cmd;
@@ -266,13 +314,23 @@ void ACM::ATL(Player * player, Game * game) {
 
 }
 
-
+/**
+ * @brief Lumber card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::BCH(Player * player) {
     addPurchases(player, 1);
     addPurchasePower(player, 2);
 }
 
-
+/**
+ * @brief Cellar card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::CAV(Player * player, Game * game) {
     addActions(player, 1);
     std::string cmd;
@@ -296,7 +354,12 @@ void ACM::CAV(Player * player, Game * game) {
     
 }
 
-
+/**
+ * @brief Chapel card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::CPL(Player * player, Game * game) {
     std::cout<<"Vous pouvez écarter autant de cartes que vous le souhaitez.\nEntrez un identificateur. Entrez STOP pour passer."<<std::endl;
     std::string cmd;
@@ -316,13 +379,24 @@ void ACM::CPL(Player * player, Game * game) {
     } while (cmd != "STOP");
 }
 
+/**
+ * @brief Smithy card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::FGN(Player * player, Game * game) {
     for(int i = 0; i < 3; i++) {
         addRandomCard(player, game);
     }
 }
 
-
+/**
+ * @brief Marketplace card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::MRC(Player * player, Game * game) {
     addPurchasePower(player, 1);
     addPurchases(player, 1);
@@ -330,28 +404,55 @@ void ACM::MRC(Player * player, Game * game) {
     addRandomCard(player, game);
 }
 
+/**
+ * @brief Mine card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::MNE(Player * player, Game * game) {
     trashAndGet(player, game, true, 3);
     
 }
 
-
+/**
+ * @brief Remodel card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::RNV(Player * player, Game * game) {
     trashAndGet(player, game, false, 2);
 }
 
-
+/**
+ * @brief Witch card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::SRC(Player * player, Game * game) {
     addRandomCardMult(player, game, 2);
-    cursePlayers(player, game, 2);
+    cursePlayers(game, 2);
 }
 
-
+/**
+ * @brief Village card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::VLL(Player * player, Game * game) {
     addActions(player, 2);
     addRandomCard(player, game);
 }
 
+/**
+ * @brief Throne room card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::SAT(Player * player, Game * game) {
     std::string cmd;
     do
@@ -367,6 +468,12 @@ void ACM::SAT(Player * player, Game * game) {
 
 //Other cards
 
+/**
+ * @brief Plays all MoneyCards in hand
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::P__(Player * player) {
     std::vector<Card *> played;
     for(Card * card: player->getHand()) {
@@ -388,15 +495,32 @@ void ACM::P__(Player * player) {
 }
 
 
-
+/**
+ * @brief Copper card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::CVE(Player * player) {
     addPurchasePower(player, 1);
 }
 
+/**
+ * @brief Remodel silver effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::AGN(Player * player) {
     addPurchasePower(player, 2);
 }
 
+/**
+ * @brief Gold card effect
+ * 
+ * @param player 
+ * @param game 
+ */
 void ACM::AUR(Player * player) {
     addPurchasePower(player, 3);
 }

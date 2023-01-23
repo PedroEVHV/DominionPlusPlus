@@ -5,7 +5,10 @@
 #include <vector>
 
 
-
+/**
+ * @brief Abstract parent class for all card types. Contains basic info common to all cards and some getters.
+ * 
+ */
 class Card {
     protected:
     std::string id;

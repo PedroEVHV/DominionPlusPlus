@@ -7,7 +7,10 @@
 #include "card.hpp"
 
 
-
+/**
+ * @brief Main player class: for now is not abstract as no AI is implemented.
+ * 
+ */
 class Player {
     private:
     std::string id;

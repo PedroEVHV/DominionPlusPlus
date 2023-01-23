@@ -89,7 +89,6 @@ int main() {
 
     //Test 
     int n;
-    char term;
     std::cout<<"Choisissez le nombre de joueurs"<<std::endl;
     std::cin>>n;
     while (!std::cin.good()) {
@@ -111,25 +110,15 @@ int main() {
     
     std::vector<Card *> cards = {&workshop, &lumber, &cellar, &remodel, &chapel, &mine, &market, &village, &witch, &smithy};
     Game test = Game(players, cards, &province, &duche, &domain, &c, &copper, &silver, &gold);
-
-
-    //std::cout<<test.getKingdomCards().size()<<std::endl;
-    std::cout<<"1------"<<std::endl;
-
-    //players[0]->~Player();
     
     
-    //test.run();
+    test.run();
 
 
     //Memory free
-    std::cout<<"2------"<<std::endl;
-    players.clear();
-    std::cout<<"3------"<<std::endl;
-    cards.clear();
 
-std::cout<<"4------"<<std::endl;
-    
-std::cout<<"5------"<<std::endl;
+    players.clear();
+
+    cards.clear();
     return 0;
 }//

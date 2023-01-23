@@ -21,10 +21,6 @@ class ActionCard : public Card {
     std::string getActionType() {return this->actionType;}
     bool getReact() {return this->react;}
     bool getAttack() {return this->attack;}
-
-
-
-    void applyEffect(Player * player);
     std::string toString();
 
 };

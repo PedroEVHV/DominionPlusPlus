@@ -91,14 +91,9 @@ void Player::setHand() {
     std::vector<Card *> cards;
     for(int i = 0; i < 5; i++) {
         int random;
-        this->printSets();
         do
         {
             random = rand() % (this->getDeck().size());
-            for(unsigned int j = 0; j < randInts.size(); j++) {
-                std::cout<<randInts[j]<<" ";
-            }
-            std::cout<<"\n";
             
         } while (std::find(randInts.begin(), randInts.end(), random) != randInts.end());
         
@@ -110,7 +105,7 @@ void Player::setHand() {
         
         
     }
-    this->printSets();
+    
 
     for(Card * card : cards) {
         this->removeCardFromDeck(card);
@@ -118,7 +113,6 @@ void Player::setHand() {
     }
     randInts.clear();
     cards.clear();
-    this->printSets();
 }
 
 
@@ -188,11 +182,11 @@ bool Player::isInSet(std::vector<Card*> cards, Card * c) {
  * 
  */
 void Player::showHand() {
-    std::cout<<"Voici votre main"<<std::endl;
+    std::cout<<"Voici votre main: \n-";
     for(Card * card : this->getHand()) {
-        std::cout<<card->getName() + " ";
+        std::cout<<"- " + card->getName() + " -";
     }
-    std::cout<<std::endl;
+    std::cout<<"-"<<std::endl;
 }
 
 /**
@@ -207,9 +201,18 @@ std::string Player::toString() {
     } else {
         out += "false \n";
     }
-    out += "main: ";
-    for(auto c: this->hand) {
-        
+    out += "main: \n";
+    for(Card * c: this->hand) {
+        out += c->toString();
     }
+    out += "\ndefausse: \n";
+    for(Card * c: this->discard) {
+        out += c->toString();
+    }
+    out += "\ndeck: \n";
+    for(Card * c: this->deck) {
+        out += c->toString();
+    }
+    return out;
 }
 

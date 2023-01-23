@@ -4,6 +4,10 @@
 #include "card.hpp"
 #include "player.hpp"
 
+/**
+ * @brief MoneyCard class: represents in-game currency. At this point three types are implemented : copper, silver and gold coins. In-game currency is used to add purchasing power to a player during buy phase.
+ * 
+ */
 class MoneyCard : public Card {
 private:
     int worth;

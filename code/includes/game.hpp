@@ -6,6 +6,7 @@
 #include <iostream>
 #include <map>
 #include <algorithm>
+#include <stdlib.h>
 #include "player.hpp"
 #include "card.hpp"
 #include "moneyCard.hpp"
@@ -13,18 +14,23 @@
 #include "victoryCard.hpp"
 #include "actionCard.hpp"
 
+/**
+ * @brief Main class for games. Includes all systems to completely manage a game.
+ * 
+ */
 class Game {
 private:
     std::string id;
     static int idCounter;
+    
 
     //game info
-    int currTurn;
     Player * currPlayer;
-
+    int turnCount;
 
     std::vector<Player *> players;
     int playerCount;
+    std::vector<Player*> surrenders;
 
     std::map<Card *, int> kingdomCards;
     std::map<Card *, int> otherCards;
@@ -44,6 +50,7 @@ public:
     std::vector<Player *> getPlayers() {return this->players;}
     Player * getPlayerById();
     Player * getPlayerByName();
+    std::vector<Player*> getSurrenders() {return this->surrenders;}
     int getPlayerCount() {return this->playerCount;}
     std::map<Card *, int> getOC() {return this->otherCards;}
     std::vector<Card *> getTrash() {return this->trash;}
