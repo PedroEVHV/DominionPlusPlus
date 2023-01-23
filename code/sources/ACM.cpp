@@ -167,7 +167,7 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
         {
             std::cin>>cmd;
             if(Game::getIdents()[cmd] != nullptr) {
-                if(Game::getIdents()[cmd]->getType() == "Tresor" && player->isInSet(player->getHand(), Game::getIdents()[cmd]) && game->getKingdomCards().find( Game::getIdents()[cmd]) != game->getKingdomCards().end()) {
+                if(Game::getIdents()[cmd]->getType() != "Tresor" && player->isInSet(player->getHand(), Game::getIdents()[cmd]) && game->getKingdomCards().find( Game::getIdents()[cmd]) != game->getKingdomCards().end()) {
                     game->toTrash(Game::getIdents()[cmd], player, true);
                     std::cout<<"Choisissez votre carte"<<std::endl;
                     std::string id;
@@ -177,6 +177,7 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
                         std::cout<<"Entrez un identificateur valide.\n";
                         std::cin>>id;
                     } while (addCard(id, player));
+                    game->getKingdomCards()[Game::getIdents()[cmd]]--;
                     
                 }
 
@@ -187,13 +188,13 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
     } else {
         do
         {
-            std::cout<<"Entrez un identificateur valide"<<std::endl;
+            std::cout<<"Maintenant choisissez la nouvelle carte trésor.\nEntrez un identificateur valide"<<std::endl;
             std::cin>>cmd;
         } while (Game::getIdents()[cmd]->getType() != "Tresor" && player->isInSet(player->getHand(), Game::getIdents()[cmd]));
         int worth = Game::getIdents()[cmd]->getCost() + extra;
         do
         {
-            std::cout<<"Maintenant choisissez la nouvelle carte trésor.\nEntrez un identificateur valide"<<std::endl;
+            std::cout<<"Entrez un identificateur valide"<<std::endl;
             std::cin>>cmd;
             if(Game::getIdents().find(cmd) != Game::getIdents().end()) {
                 if(Game::getIdents()[cmd]->getCost() <= worth) {

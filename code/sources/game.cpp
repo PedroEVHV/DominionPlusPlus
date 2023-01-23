@@ -361,6 +361,8 @@ void Game::enterCommand(Player * player, bool * acted) {
             player->setPurchasePower(player->getPurchasePower() - card->getCost());
             if(card->getType() == "Action") {
                 this->kingdomCards[card]--;
+            } else if(card->getType() == "Malediction" || card->getType() == "Victoire") {
+                this->otherCards[card]--;
             }
         } else {
             std::cout<<"Vous ne pouvez pas acheter cette carte.";
