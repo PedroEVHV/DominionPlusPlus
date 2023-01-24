@@ -300,6 +300,7 @@ void ACM::addActions(Player * player, int n) {
  */
 void ACM::ATL(Player * player, Game * game) {
     std::cout<<"Carte Atelier. Choisissez une carte valant au plus 4.\nEntrez un identificateur valide"<<std::endl;
+    bool ok = false;
     std::string cmd;
     do
     {
@@ -307,8 +308,11 @@ void ACM::ATL(Player * player, Game * game) {
         if(Game::getIdents()[cmd] != nullptr && Game::getIdents()[cmd]->getCost() > 4) {
             if(game->getKingdomCards().find(Game::getIdents()[cmd]) != game->getKingdomCards().end())
             std::cout<<"Cette carte vaut plus que 4. Choisissez-en une autre.\n";
+            
+        } else {
+            ok = true;
         }
-    } while (Game::getIdents()[cmd] == nullptr);
+    } while (Game::getIdents()[cmd] == nullptr || !ok);
     player->addCardToDiscard(Game::getIdents()[cmd]);
     game->getKingdomCards()[Game::getIdents()[cmd]]--;
     

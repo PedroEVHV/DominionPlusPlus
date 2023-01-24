@@ -75,6 +75,10 @@ int main() {
     cardsForMap.push_back(&chapel);
     cardsForMap.push_back(&market);
     cardsForMap.push_back(&mine);
+    cardsForMap.push_back(&witch);
+    cardsForMap.push_back(&smithy);
+    cardsForMap.push_back(&village);
+    cardsForMap.push_back(&remodel);
 
 
     cardsForMap.push_back(&c);

@@ -301,7 +301,7 @@ void Game::adjustment(Player * player, unsigned int n) {
  * @return false if not
  */
 bool Game::validateCommand(std::string cmd, std::map<Card *, int> kc) {
-    if(cmd.size() == 1 && cmd == "s") {
+    if(cmd.size() == 1 && (cmd == "s" || cmd == "c")) {
         return true;
     } 
     if((((cmd[0] == 'p' || cmd[0] == 'b') && (cmd.size() == 5) && (Game::getIdents()[cmd.substr(2,3)] != nullptr)) 
@@ -352,9 +352,9 @@ void Game::enterCommand(Player * player, bool * acted) {
         std::cout<<"Vous avez choisi de faire un achat. Jouer une carte action ne sera plus possible."<<std::endl;
         player->setNbCardPlays(0);
         Card * card = idents[cmd.substr(2,3)];
-        if (card->getCost() <= player->getPurchasePower() && ((card->getType() == "Action" && this->kingdomCards[card] > 0) || card->getType() != "Action")
+        if (card->getCost() <= player->getPurchasePower()
              && player->getNbPurchases() > 0
-             && (card->getCmdID() == "CVE" || card->getCmdID() == "AGN" || card->getCmdID() == "AUR" || card->getCmdID() == "MAL" || card->getCmdID() == "DMN" || card->getCmdID() == "DUC" || card->getCmdID() == "PRV")) {
+             && (card->getCmdID() == "CVE" || card->getCmdID() == "AGN" || card->getCmdID() == "AUR" || card->getCmdID() == "MAL" || card->getCmdID() == "DMN" || card->getCmdID() == "DUC" || card->getCmdID() == "PRV" || ((card->getType() == "Action" && this->kingdomCards[card] > 0)))) {
             std::cout<<"Carte achetee"<<std::endl;
             player->addCardToDiscard(card);
             player->setNbPurchases(player->getNbPurchases() - 1);
