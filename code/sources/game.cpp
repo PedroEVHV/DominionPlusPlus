@@ -125,6 +125,10 @@ void Game::setKingdomCardStack(Card * card, int n) {
     this->kingdomCards[card] += n;
 }
 
+void Game::setOC(Card * card, int n) {
+    this->otherCards[card] += n;
+}
+
 /**
  * @brief Destroy the Game:: Game object. Standard destruction and memory freeing
  * 
@@ -335,7 +339,7 @@ void Game::enterCommand(Player * player, bool * acted) {
         if(!*acted) {
            Card * card = idents[cmd.substr(2,3)];
             if((player->getNbCardPlays() > 0 && player->isInSet(player->getHand(), card))||cmd.substr(2,3) == "P__") {
-                if(cmd.substr(2,3) != "CVE" && cmd.substr(2,3) != "AGN" && cmd.substr(2,3) != "AUR") {
+                if(cmd.substr(2,3) != "CVE" && cmd.substr(2,3) != "AGN" && cmd.substr(2,3) != "AUR" && cmd.substr(2, 3) != "P__") {
                     player->setNbCardPlays(player->getNbCardPlays() - 1);
                 }
                 ACM::selectEffect(cmd.substr(2,3), player, this);

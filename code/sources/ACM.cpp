@@ -46,6 +46,8 @@ void ACM::selectEffect(std::string ident, Player * player, Game * game) {
         VLL(player, game);
     } else if(ident == "SAT") {
         SAT(player, game);
+    } else if(ident == "SRC") {
+        SRC(player, game);
     }
 }
 
@@ -188,13 +190,13 @@ void ACM::trashAndGet(Player * player, Game * game, bool treasure, int extra) {
     } else {
         do
         {
-            std::cout<<"Maintenant choisissez la nouvelle carte trésor.\nEntrez un identificateur valide"<<std::endl;
+            std::cout<<"Entrez un identificateur valide"<<std::endl;
             std::cin>>cmd;
         } while (Game::getIdents()[cmd]->getType() != "Tresor" && player->isInSet(player->getHand(), Game::getIdents()[cmd]));
         int worth = Game::getIdents()[cmd]->getCost() + extra;
         do
         {
-            std::cout<<"Entrez un identificateur valide"<<std::endl;
+            std::cout<<"Maintenant choisissez la nouvelle carte trésor.\nEntrez un identificateur valide"<<std::endl;
             std::cin>>cmd;
             if(Game::getIdents().find(cmd) != Game::getIdents().end()) {
                 if(Game::getIdents()[cmd]->getCost() <= worth) {
@@ -231,8 +233,9 @@ void ACM::addCurseUnit(Player * player, Card * c) {
 void ACM::curseTarget(Player * target, Game * game, int n) {
     Card * curse = Game::getIdents()["MAL"];
     if(curse == nullptr) {std::cout<<"Fatal error."<<std::endl; exit(0);}
-    if(game->getKingdomCards()[curse] > n) {
-        game->setKingdomCardStack(curse, -n);
+    if(game->getOC()[curse] > n) {
+        
+        game->setOC(curse, -n);
         for(int i = 0; i < n; i++) {
             addCurseUnit(target, curse);
         }
@@ -245,9 +248,13 @@ void ACM::curseTarget(Player * target, Game * game, int n) {
  * @param game current game
  * @param n amount of curses
  */
-void ACM::cursePlayers(Game * game, int n) {
+void ACM::cursePlayers(Player * player, Game * game, int n) {
     for(Player * p: game->getPlayers()) {
-        curseTarget(p, game, n);
+        if(p->getID() != player->getID()) {
+            
+            curseTarget(p, game, n);
+        }
+        
     }
 }
 
@@ -366,6 +373,7 @@ void ACM::CAV(Player * player, Game * game) {
  * @param game 
  */
 void ACM::CPL(Player * player, Game * game) {
+    std::vector<Card*> toBeTrashed;
     std::cout<<"Vous pouvez écarter autant de cartes que vous le souhaitez.\nEntrez un identificateur. Entrez STOP pour passer."<<std::endl;
     std::string cmd;
     do
@@ -375,8 +383,12 @@ void ACM::CPL(Player * player, Game * game) {
         Card* tobeTrashed = nullptr;
         for(Card * card : player->getHand()) {
             if(trashed == false && game->getIdents()[cmd] == card) {
+                tobeTrashed == game->getIdents()[cmd];
                 game->toTrash(card, player, false);
+                std::cout<<"poubelle"<<std::endl;
+                break;
             }
+            
         }
         if(tobeTrashed != nullptr) {player->removeCardFromHand(tobeTrashed);}
         
@@ -438,7 +450,7 @@ void ACM::RNV(Player * player, Game * game) {
  */
 void ACM::SRC(Player * player, Game * game) {
     addRandomCardMult(player, game, 2);
-    cursePlayers(game, 2);
+    cursePlayers(player, game, 2);
 }
 
 /**

@@ -42,7 +42,7 @@ class ACM {
     static void addActions(Player * player, int n);
     static void addPurchases(Player * player, int n);
     static void addCurseUnit(Player * player, Card * c);
-    static void cursePlayers(Game * game, int n);
+    static void cursePlayers(Player * player, Game * game, int n);
     static void curseTarget(Player * target, Game * game, int n);
 
     /*

@@ -64,6 +64,7 @@ public:
     void setCardSet(std::vector<std::string> cardList);
 
     void setKingdomCardStack(Card * card, int n);
+    void setOC(Card * card, int n);
 
 
     void run();

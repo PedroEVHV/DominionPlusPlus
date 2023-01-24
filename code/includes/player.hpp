@@ -50,6 +50,7 @@ class Player {
     int getNbPurchases() const {return this->nbPurchases;}
     int getPurchasePower() const {return this->purchasePower;}
     int getNbCardPlays() const {return this->nbCardPlays;}
+    std::string getID() const {return this->id;}
 
     void setMoney(int money) {this->money = money;}
     void setDeck(Card * copper, Card * domain);
